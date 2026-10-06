@@ -102,8 +102,14 @@ has a health check on `/health` that deployment tooling can wait for before swit
 
 ## Licence
 
-The code is released under the [MIT licence](LICENSE).
+The code is released under the [MIT licence](LICENSE). That licence covers the code only, not the
+Traveller material described below.
 
-This is an unofficial fan project. Traveller and its rules and artwork belong to their owners and are not
-covered by this licence. The map symbols in `src/features/bookSymbols.json` are traced from the Traveller5
-rulebook, which is not included in this repository.
+The map symbols in `src/features/bookSymbols.json` are traced from the Traveller5 rulebook, which is not
+included in this repository.
+
+### Far Future Enterprises license
+
+The Traveller game in all forms is owned by Far Future Enterprises. Copyright 1977 - 2023 Far Future Enterprises.
+Traveller is a registered trademark of Far Future Enterprises. Far Future permits websites and fanzines for this game,
+provided it contains this notice, that Far Future is notified, and subject to a withdrawal of permission on 90 days notice.
