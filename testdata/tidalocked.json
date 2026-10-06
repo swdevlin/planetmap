@@ -1,0 +1,543 @@
+{
+  "id": 1585741,
+  "type": "TerrestrialPlanet",
+  "name": "Nadia",
+  "uwp": "D537647-6",
+  "notes": null,
+  "size_code": "5",
+  "orbit": 0.08504218083428064,
+  "orbit_x": -5008240.426730633,
+  "orbit_y": 926427.1119872924,
+  "orbit_sequence": "B I",
+  "au": 0.034016872333712256,
+  "mass": 0.1760390193329942,
+  "diameter": 7617.0,
+  "inclination": 6.0,
+  "eccentricity": 0.0037526419191018057,
+  "effective_hzco_deviation": -0.5882741959978132,
+  "survey_index": 0,
+  "detect_si": null,
+  "parsec_id": null,
+  "star_system_id": 50650,
+  "orbiting_id": 1585740,
+  "allegiance_id": null,
+  "tidal_lock_target_id": 1585740,
+  "companion_id": null,
+  "created_at": "2026-09-06T06:17:10.481Z",
+  "updated_at": "2026-09-06T06:17:10.481Z",
+  "tidal_lock_target_type": "Star",
+  "albedo": 0.22,
+  "period": 5.728907411858473,
+  "density": 0.8268002618357676,
+  "gravity": 0.49370787036712466,
+  "rotation": 137.49377788460336,
+  "economics": {
+    "tariffs": {
+      "rate": null,
+      "regime": "free_trade"
+    },
+    "total_gwp": {
+      "label": "Total GWP",
+      "value": 1512000000
+    },
+    "efficiency": {
+      "label": "Efficiency",
+      "value": -1
+    },
+    "importance": {
+      "label": "Importance",
+      "value": -3
+    },
+    "labour_factor": {
+      "label": "Labour Factor",
+      "value": 5
+    },
+    "per_capita_gwp": {
+      "label": "Per Capita GWP",
+      "value": 1512
+    },
+    "resource_units": {
+      "label": "Resource Units",
+      "value": -5
+    },
+    "infrastructure": {
+      "label": "Infrastructure",
+      "value": 1
+    },
+    "resource_factor": {
+      "label": "Resource Factor",
+      "value": 0
+    },
+    "development_score": {
+      "label": "Development Score",
+      "value": 0.6652799999999999
+    },
+    "inequality_rating": {
+      "label": "Inequality Rating",
+      "value": 56
+    },
+    "world_trade_number": {
+      "label": "World Trade Number",
+      "value": 7
+    },
+    "label": "Economics",
+    "tariff_regime": {
+      "label": "Tariff Regime",
+      "value": "free_trade"
+    }
+  },
+  "law_level": {
+    "code": 7,
+    "private_law": 7,
+    "uniformity": "P",
+    "criminal_law": 8,
+    "economic_law": 6,
+    "death_penalty": false,
+    "judicial_system": "I",
+    "personal_rights": 6,
+    "weapons_and_armour": 7,
+    "presumed_innocence": false,
+    "label": "Law Level",
+    "sub_classifications": {
+      "label": "Sub-Classifications",
+      "weapons_and_armour": {
+        "label": "Weapons \u0026 Armour",
+        "code": 7,
+        "description": "Shotguns and all other ranged firearms"
+      },
+      "criminal_law": {
+        "label": "Criminal Law",
+        "code": 8,
+        "description": "Indefinite detention allowed"
+      },
+      "economic_law": {
+        "label": "Economic Law",
+        "code": 6,
+        "description": "Moderate permitting and zoning laws, registration fees required for professional licenses"
+      },
+      "private_law": {
+        "label": "Private Law",
+        "code": 7,
+        "description": "Limits on all tort settlements"
+      },
+      "personal_rights": {
+        "label": "Personal Rights",
+        "code": 6,
+        "description": "Public surveillance"
+      }
+    },
+    "characteristics": {
+      "label": "Characteristics",
+      "uniformity": {
+        "label": "Law Uniformity",
+        "code": "P",
+        "description": "Personal"
+      },
+      "judicial_system": {
+        "label": "Judicial System",
+        "code": "I",
+        "description": "Inquisitorial"
+      },
+      "death_penalty": {
+        "label": "Death Penalty",
+        "value": false
+      },
+      "presumed_innocence": {
+        "label": "Presumed Innocence",
+        "value": false
+      }
+    }
+  },
+  "atmosphere": {
+    "bar": 0.26108421777196866,
+    "code": 3,
+    "gases": [],
+    "taint": {
+      "code": "",
+      "subtype": "",
+      "severity": 0,
+      "persistence": 0
+    },
+    "density": "Very Thin",
+    "gas_type": null,
+    "subtype": null,
+    "irritant": false,
+    "hazard_code": null,
+    "composition": null,
+    "characteristic": "",
+    "gasType": null,
+    "hazardCode": null,
+    "label": "Atmosphere",
+    "description": "Very Thin",
+    "survival_requirement": {
+      "label": "Survival Requirement",
+      "value": "Respirator"
+    }
+  },
+  "axial_tilt": 2.7164725327415753,
+  "government": {
+    "code": 4,
+    "authority": "B",
+    "structure": {
+      "judicial": {
+        "label": "Judicial",
+        "code": "R",
+        "description": "Ruler"
+      },
+      "executive": {
+        "label": "Executive",
+        "code": "M",
+        "description": "Multiple Councils"
+      },
+      "legislative": {
+        "label": "Legislative",
+        "code": "R",
+        "description": "Ruler"
+      },
+      "label": "Structure"
+    },
+    "centralisation": "F",
+    "label": "Government",
+    "type": "Representative Democracy",
+    "description": "Ruling functions are performed by elected representatives. Examples: Republic, democracy",
+    "characteristics": {
+      "label": "Characteristics",
+      "authority": {
+        "label": "Authority",
+        "code": "B",
+        "description": "Balance"
+      },
+      "centralisation": {
+        "label": "Centralisation",
+        "code": "F",
+        "description": "Federal"
+      }
+    }
+  },
+  "greenhouse": 0.34615648450246034,
+  "population": {
+    "code": 6,
+    "cohesion": 10,
+    "diversity": 6,
+    "militancy": 11,
+    "symbology": 5,
+    "uniqueness": 4,
+    "xenophilia": 7,
+    "major_cities": {
+      "label": "Major Cities",
+      "value": 7
+    },
+    "expansionism": 6,
+    "progressiveness": 2,
+    "census_population": {
+      "label": "Census Population",
+      "value": 7500000
+    },
+    "concentration_rating": {
+      "label": "Concentration Rating",
+      "code": 5,
+      "description": "Slightly Concentrated"
+    },
+    "major_city_population": {
+      "label": "Major City Population",
+      "value": 3102272
+    },
+    "total_urban_population": 6825000,
+    "urbanization_percentage": {
+      "label": "Urbanization %",
+      "value": 91
+    },
+    "label": "Population",
+    "range": "1,000,000 – 9,999,999",
+    "cities": [
+      {
+        "name": "City 1",
+        "type_label": null,
+        "capital_label": null,
+        "population": 961704
+      },
+      {
+        "name": "City 2",
+        "type_label": null,
+        "capital_label": null,
+        "population": 651477
+      },
+      {
+        "name": "City 3",
+        "type_label": null,
+        "capital_label": null,
+        "population": 541035
+      },
+      {
+        "name": "City 4",
+        "type_label": null,
+        "capital_label": null,
+        "population": 451691
+      },
+      {
+        "name": "City 5",
+        "type_label": null,
+        "capital_label": null,
+        "population": 341249
+      },
+      {
+        "name": "City 6",
+        "type_label": null,
+        "capital_label": null,
+        "population": 124090
+      },
+      {
+        "name": "City 7",
+        "type_label": null,
+        "capital_label": null,
+        "population": 31022
+      }
+    ],
+    "native_sophont": {
+      "label": "Native Sophont",
+      "value": false
+    },
+    "extinct_sophont": {
+      "label": "Extinct Sophont",
+      "value": false
+    },
+    "culture": {
+      "label": "Culture",
+      "traits": [
+        {
+          "label": "Diversity",
+          "code": "D",
+          "value": 6,
+          "low_label": "Monolithic",
+          "high_label": "Multicultural",
+          "min": 1,
+          "max": 20
+        },
+        {
+          "label": "Xenophilia",
+          "code": "X",
+          "value": 7,
+          "low_label": "Xenophobic",
+          "high_label": "Xenophilic",
+          "min": 1,
+          "max": 17
+        },
+        {
+          "label": "Uniqueness",
+          "code": "U",
+          "value": 4,
+          "low_label": "Normal",
+          "high_label": "Obscure",
+          "min": 1,
+          "max": 18
+        },
+        {
+          "label": "Symbology",
+          "code": "S",
+          "value": 5,
+          "low_label": "Concrete",
+          "high_label": "Abstract",
+          "min": 1,
+          "max": 19
+        },
+        {
+          "label": "Cohesion",
+          "code": "C",
+          "value": 10,
+          "low_label": "Individualistic",
+          "high_label": "Collective",
+          "min": 1,
+          "max": 22
+        },
+        {
+          "label": "Progressiveness",
+          "code": "P",
+          "value": 2,
+          "low_label": "Reactionary",
+          "high_label": "Radical",
+          "min": 1,
+          "max": 18
+        },
+        {
+          "label": "Expansionism",
+          "code": "E",
+          "value": 6,
+          "low_label": "Passive",
+          "high_label": "Expansionistic",
+          "min": 1,
+          "max": 18
+        },
+        {
+          "label": "Militancy",
+          "code": "M",
+          "value": 11,
+          "low_label": "Peaceful",
+          "high_label": "Militant",
+          "min": 1,
+          "max": 20
+        }
+      ]
+    },
+    "biological_data": {
+      "label": "Biological Data",
+      "habitability_rating": {
+        "label": "Habitability Rating",
+        "code": 6,
+        "description": "Regionally habitable world: may require acclimation"
+      },
+      "biomass_rating": {
+        "label": "Biomass Rating",
+        "value": 10
+      },
+      "biodiversity_rating": {
+        "label": "Biodiversity Rating",
+        "code": 9,
+        "description": "Moderate species diversity"
+      },
+      "biocomplexity_rating": {
+        "label": "Biocomplexity Rating",
+        "code": 5,
+        "description": "Complex multicellular organisms"
+      },
+      "resource_rating": {
+        "label": "Resource Rating",
+        "code": 7,
+        "description": "Worthwhile with considerable effort"
+      }
+    }
+  },
+  "retrograde": false,
+  "tech_level": {
+    "air": {
+      "label": "Air Transport",
+      "code": 5,
+      "description": "Airplane"
+    },
+    "sea": {
+      "label": "Water Transport",
+      "code": 7,
+      "description": "Hovercraft"
+    },
+    "code": 6,
+    "land": {
+      "label": "Land Transport",
+      "code": 7,
+      "description": "High Speed Train"
+    },
+    "space": {
+      "label": "Space Transport",
+      "code": 5,
+      "description": null
+    },
+    "energy": {
+      "label": "Energy",
+      "code": 7,
+      "description": "Basic solar"
+    },
+    "medical": {
+      "label": "Medical",
+      "code": 6,
+      "description": "Tissue bioreactor"
+    },
+    "electronics": {
+      "label": "Electronics",
+      "code": 6,
+      "description": "Television, transistors"
+    },
+    "environmental": {
+      "label": "Environmental",
+      "code": 7,
+      "description": "High yield crops"
+    },
+    "manufacturing": {
+      "label": "Manufacturing",
+      "code": 5,
+      "description": "Heavy industry"
+    },
+    "heavy_military": {
+      "label": "Heavy Military",
+      "code": 4,
+      "description": "Artillery"
+    },
+    "personal_military": {
+      "label": "Personal Military",
+      "code": 4,
+      "description": "Revolver, Shotgun"
+    },
+    "label": "Tech Level",
+    "descriptor": "Industrial"
+  },
+  "tidal_lock": "1:1",
+  "temperature": 283.88274195997815,
+  "sidereal_day": 137.49377788460336,
+  "berthing_cost": 10,
+  "hydrographics": {
+    "code": 7,
+    "liquid": {
+      "label": "Liquid",
+      "value": "Water"
+    },
+    "distribution": {
+      "label": "Distribution",
+      "code": 6,
+      "description": "Slightly Skewed"
+    },
+    "label": "Hydrographics",
+    "description": "66%–75%"
+  },
+  "starport_code": "D",
+  "twilight_zone": true,
+  "biomass_rating": 10,
+  "native_sophont": false,
+  "extinct_sophont": false,
+  "resource_rating": 7,
+  "tidal_lock_note": "1:1 tidal lock to primary star: rotation period 137.5h. permanent day/night hemispheres, twilight zone at terminator",
+  "refined_fuel_cost": null,
+  "biodiversity_rating": 9,
+  "habitability_rating": 6,
+  "unrefined_fuel_cost": 100,
+  "biocomplexity_rating": 5,
+  "compatibility_rating": 6,
+  "current_temperature": 283.7613880342324,
+  "periapsis_temperature": 283.94256871162355,
+  "apoapsis_temperature": 283.8233625463854,
+  "hex": "1726",
+  "star_system_name": "Nadia",
+  "subsector_name": "Desta",
+  "sector_name": "Ilelish",
+  "orbit_position": {
+    "x": -5008240.426730633,
+    "y": 926427.1119872924
+  },
+  "periapsis": 0.03388921919263603,
+  "apoapsis": 0.03414452547478848,
+  "orbit_type": 11,
+  "is_moon": false,
+  "orbiting_name": "M8 V",
+  "jump_shadow": {
+    "distance_km": 22746795,
+    "source_id": 1585740,
+    "source_name": "M8 V",
+    "travel_times": {
+      "1g": 26.75,
+      "2g": 18.92,
+      "3g": 15.45,
+      "4g": 13.38,
+      "5g": 11.96,
+      "6g": 10.92
+    }
+  },
+  "starport": {
+    "label": "Starport",
+    "code": "D",
+    "quality": "Poor",
+    "fuel": "Unrefined fuel",
+    "facilities": "Limited Repair"
+  },
+  "size_detail": {
+    "label": "Size",
+    "code": "5",
+    "description": "8,000 km"
+  },
+  "city_count": 7
+}

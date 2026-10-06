@@ -1,0 +1,18 @@
+{
+  "name": "planetmap",
+  "version": "1.0.0",
+  "description": "Web service that draws Traveller5 world maps as SVG from a planet's JSON characteristics",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test --test-name-pattern=. test/Rng.test.js test/PlanetProfile.test.js test/Biosphere.test.js test/WorldGrid.test.js test/MapService.test.js test/PlanetMapServer.test.js test/Liquid.test.js test/HexPainter.test.js test/BookSymbol.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "pngjs": "^3.4.0",
+    "potrace": "^2.1.8"
+  }
+}

@@ -1,0 +1,11 @@
+# Rulebook PDFs (large, and not ours to redistribute)
+*.pdf
+
+# Dependencies
+node_modules/
+
+# Editor settings
+.idea/
+
+# Generated sample renders (rebuilt from testdata/)
+output/

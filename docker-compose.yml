@@ -1,0 +1,15 @@
+# Blue/green pair: run both, point the front proxy at whichever is live, and
+# update the idle colour first (docker compose up -d --build green).
+services:
+  blue:
+    build: .
+    image: planetmap:${TAG:-latest}
+    ports:
+      - "3001:3013"
+    restart: unless-stopped
+  green:
+    build: .
+    image: planetmap:${TAG:-latest}
+    ports:
+      - "3002:3013"
+    restart: unless-stopped

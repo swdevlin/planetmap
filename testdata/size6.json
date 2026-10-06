@@ -1,0 +1,522 @@
+{
+  "id": 1586003,
+  "type": "TerrestrialPlanet",
+  "name": "Daedalus",
+  "uwp": "B673433-B",
+  "notes": null,
+  "size_code": "6",
+  "orbit": 4.191554349716511,
+  "orbit_x": 295987625.4091282,
+  "orbit_y": 23099809.015006475,
+  "orbit_sequence": "A VI",
+  "au": 1.829865219659813,
+  "mass": 0.5656776427904392,
+  "diameter": 11294.0,
+  "inclination": 3.0,
+  "eccentricity": 0.08456766194095006,
+  "effective_hzco_deviation": -0.06031238187995047,
+  "survey_index": 0,
+  "detect_si": null,
+  "parsec_id": null,
+  "star_system_id": 50658,
+  "orbiting_id": 1585991,
+  "allegiance_id": null,
+  "tidal_lock_target_id": null,
+  "companion_id": null,
+  "created_at": "2026-09-06T06:17:22.401Z",
+  "updated_at": "2026-09-06T06:17:22.401Z",
+  "tidal_lock_target_type": null,
+  "albedo": 0.33,
+  "period": 792.9525540764597,
+  "density": 0.8150217450612494,
+  "gravity": 0.7216098768204571,
+  "rotation": 28.368333333333332,
+  "economics": {
+    "tariffs": {
+      "rate": null,
+      "regime": "free_trade"
+    },
+    "total_gwp": {
+      "label": "Total GWP",
+      "value": 115920000
+    },
+    "efficiency": {
+      "label": "Efficiency",
+      "value": 1
+    },
+    "importance": {
+      "label": "Importance",
+      "value": 2
+    },
+    "labour_factor": {
+      "label": "Labour Factor",
+      "value": 3
+    },
+    "per_capita_gwp": {
+      "label": "Per Capita GWP",
+      "value": 11592
+    },
+    "resource_units": {
+      "label": "Resource Units",
+      "value": 36
+    },
+    "infrastructure": {
+      "label": "Infrastructure",
+      "value": 4
+    },
+    "resource_factor": {
+      "label": "Resource Factor",
+      "value": 3
+    },
+    "development_score": {
+      "label": "Development Score",
+      "value": 4.984560000000001
+    },
+    "inequality_rating": {
+      "label": "Inequality Rating",
+      "value": 57
+    },
+    "world_trade_number": {
+      "label": "World Trade Number",
+      "value": 7
+    },
+    "label": "Economics",
+    "tariff_regime": {
+      "label": "Tariff Regime",
+      "value": "free_trade"
+    }
+  },
+  "law_level": {
+    "code": 3,
+    "private_law": 2,
+    "uniformity": "U",
+    "criminal_law": 2,
+    "economic_law": 3,
+    "death_penalty": true,
+    "judicial_system": "T",
+    "personal_rights": 3,
+    "weapons_and_armour": 3,
+    "presumed_innocence": true,
+    "label": "Law Level",
+    "sub_classifications": {
+      "label": "Sub-Classifications",
+      "weapons_and_armour": {
+        "label": "Weapons \u0026 Armour",
+        "code": 3,
+        "description": "Military weapons (all portable heavy weapons)"
+      },
+      "criminal_law": {
+        "label": "Criminal Law",
+        "code": 2,
+        "description": "Moderate crimes prosecuted"
+      },
+      "economic_law": {
+        "label": "Economic Law",
+        "code": 3,
+        "description": "Basic permitting and zoning laws, required licensing of corporations and tax reporting, bankruptcy law"
+      },
+      "private_law": {
+        "label": "Private Law",
+        "code": 2,
+        "description": "Duelling prohibited"
+      },
+      "personal_rights": {
+        "label": "Personal Rights",
+        "code": 3,
+        "description": "Group-related regulations (e.g., drinking age)"
+      }
+    },
+    "characteristics": {
+      "label": "Characteristics",
+      "uniformity": {
+        "label": "Law Uniformity",
+        "code": "U",
+        "description": "Universal"
+      },
+      "judicial_system": {
+        "label": "Judicial System",
+        "code": "T",
+        "description": "Traditional"
+      },
+      "death_penalty": {
+        "label": "Death Penalty",
+        "value": true
+      },
+      "presumed_innocence": {
+        "label": "Presumed Innocence",
+        "value": true
+      }
+    }
+  },
+  "atmosphere": {
+    "bar": 1.4215774059832915,
+    "code": 7,
+    "gases": [],
+    "taint": {
+      "code": "B",
+      "subtype": "Biological",
+      "severity": 5,
+      "persistence": 9
+    },
+    "density": "Standard",
+    "gas_type": null,
+    "subtype": null,
+    "irritant": false,
+    "hazard_code": null,
+    "composition": null,
+    "characteristic": "",
+    "gasType": null,
+    "hazardCode": null,
+    "label": "Atmosphere",
+    "description": "Standard",
+    "survival_requirement": {
+      "label": "Survival Requirement",
+      "value": "Filter Mask"
+    },
+    "taint_detail": {
+      "label": "Irritant",
+      "code": "B",
+      "description": "Biological",
+      "severity": {
+        "label": "Severity",
+        "code": 5,
+        "description": "Serious irritant"
+      },
+      "persistence": {
+        "label": "Persistence",
+        "code": 9,
+        "description": "Constant: Ever-present at indicated severity"
+      }
+    }
+  },
+  "axial_tilt": 15.028600392316733,
+  "government": {
+    "code": 3,
+    "authority": "L",
+    "structure": {
+      "judicial": {
+        "label": "Judicial",
+        "code": "S",
+        "description": "Single Council"
+      },
+      "executive": {
+        "label": "Executive",
+        "code": "S",
+        "description": "Single Council"
+      },
+      "legislative": {
+        "label": "Legislative",
+        "code": "S",
+        "description": "Single Council"
+      },
+      "label": "Structure"
+    },
+    "centralisation": "U",
+    "label": "Government",
+    "type": "Self-Perpetuating Oligarchy",
+    "description": "Ruling functions are performed by a restricted minority, with little or no input from the mass of citizenry. Examples: Plutocracy, hereditary ruling caste",
+    "characteristics": {
+      "label": "Characteristics",
+      "authority": {
+        "label": "Authority",
+        "code": "L",
+        "description": "Legislative"
+      },
+      "centralisation": {
+        "label": "Centralisation",
+        "code": "U",
+        "description": "Unitary"
+      }
+    }
+  },
+  "greenhouse": 0.62658011152082,
+  "population": {
+    "code": 4,
+    "cohesion": 10,
+    "diversity": 4,
+    "militancy": 5,
+    "symbology": 8,
+    "uniqueness": 5,
+    "xenophilia": 9,
+    "major_cities": {
+      "label": "Major Cities",
+      "value": 1
+    },
+    "expansionism": 6,
+    "progressiveness": 6,
+    "census_population": {
+      "label": "Census Population",
+      "value": 12000
+    },
+    "concentration_rating": {
+      "label": "Concentration Rating",
+      "code": 9,
+      "description": "Extremely Concentrated"
+    },
+    "major_city_population": {
+      "label": "Major City Population",
+      "value": 12000
+    },
+    "total_urban_population": 12000,
+    "urbanization_percentage": {
+      "label": "Urbanization %",
+      "value": 100
+    },
+    "label": "Population",
+    "range": "10,000 – 99,999",
+    "cities": [
+      {
+        "name": "City 1",
+        "type_label": null,
+        "capital_label": null,
+        "population": 12000
+      }
+    ],
+    "native_sophont": {
+      "label": "Native Sophont",
+      "value": false
+    },
+    "extinct_sophont": {
+      "label": "Extinct Sophont",
+      "value": false
+    },
+    "culture": {
+      "label": "Culture",
+      "traits": [
+        {
+          "label": "Diversity",
+          "code": "D",
+          "value": 4,
+          "low_label": "Monolithic",
+          "high_label": "Multicultural",
+          "min": 1,
+          "max": 20
+        },
+        {
+          "label": "Xenophilia",
+          "code": "X",
+          "value": 9,
+          "low_label": "Xenophobic",
+          "high_label": "Xenophilic",
+          "min": 1,
+          "max": 17
+        },
+        {
+          "label": "Uniqueness",
+          "code": "U",
+          "value": 5,
+          "low_label": "Normal",
+          "high_label": "Obscure",
+          "min": 1,
+          "max": 18
+        },
+        {
+          "label": "Symbology",
+          "code": "S",
+          "value": 8,
+          "low_label": "Concrete",
+          "high_label": "Abstract",
+          "min": 1,
+          "max": 19
+        },
+        {
+          "label": "Cohesion",
+          "code": "C",
+          "value": 10,
+          "low_label": "Individualistic",
+          "high_label": "Collective",
+          "min": 1,
+          "max": 22
+        },
+        {
+          "label": "Progressiveness",
+          "code": "P",
+          "value": 6,
+          "low_label": "Reactionary",
+          "high_label": "Radical",
+          "min": 1,
+          "max": 18
+        },
+        {
+          "label": "Expansionism",
+          "code": "E",
+          "value": 6,
+          "low_label": "Passive",
+          "high_label": "Expansionistic",
+          "min": 1,
+          "max": 18
+        },
+        {
+          "label": "Militancy",
+          "code": "M",
+          "value": 5,
+          "low_label": "Peaceful",
+          "high_label": "Militant",
+          "min": 1,
+          "max": 20
+        }
+      ]
+    },
+    "biological_data": {
+      "label": "Biological Data",
+      "habitability_rating": {
+        "label": "Habitability Rating",
+        "code": 8,
+        "description": "Suitable for human habitation with minimal equipment or acclimation"
+      },
+      "biomass_rating": {
+        "label": "Biomass Rating",
+        "value": 4
+      },
+      "biodiversity_rating": {
+        "label": "Biodiversity Rating",
+        "code": 5,
+        "description": "Moderate species diversity"
+      },
+      "biocomplexity_rating": {
+        "label": "Biocomplexity Rating",
+        "code": 1,
+        "description": "Primitive single-cell organisms"
+      },
+      "resource_rating": {
+        "label": "Resource Rating",
+        "code": 10,
+        "description": "Priority target"
+      }
+    }
+  },
+  "retrograde": false,
+  "tech_level": {
+    "air": {
+      "label": "Air Transport",
+      "code": 10,
+      "description": "Universal Grav Vehicles"
+    },
+    "sea": {
+      "label": "Water Transport",
+      "code": 10,
+      "description": "Merges With Air"
+    },
+    "code": 11,
+    "land": {
+      "label": "Land Transport",
+      "code": 10,
+      "description": "Merges With Air"
+    },
+    "space": {
+      "label": "Space Transport",
+      "code": 10,
+      "description": "Beanstalk"
+    },
+    "energy": {
+      "label": "Energy",
+      "code": 10,
+      "description": "Basic fusion+, improved power cell"
+    },
+    "medical": {
+      "label": "Medical",
+      "code": 10,
+      "description": "Hibernation, accelerated clones"
+    },
+    "electronics": {
+      "label": "Electronics",
+      "code": 10,
+      "description": "Advanced robot brains"
+    },
+    "environmental": {
+      "label": "Environmental",
+      "code": 10,
+      "description": "Grav cities"
+    },
+    "manufacturing": {
+      "label": "Manufacturing",
+      "code": 10,
+      "description": "Improved fabs, Robotic factories"
+    },
+    "heavy_military": {
+      "label": "Heavy Military",
+      "code": 10,
+      "description": "Plasma Gun, Crystaliron"
+    },
+    "personal_military": {
+      "label": "Personal Military",
+      "code": 10,
+      "description": "Advanced Rifle"
+    },
+    "label": "Tech Level",
+    "descriptor": "Early Stellar"
+  },
+  "tidal_lock": null,
+  "temperature": 288.60312381879953,
+  "sidereal_day": null,
+  "berthing_cost": 500,
+  "hydrographics": {
+    "code": 3,
+    "liquid": {
+      "label": "Liquid",
+      "value": "Water"
+    },
+    "distribution": {
+      "label": "Distribution",
+      "code": 4,
+      "description": "Slightly Scattered"
+    },
+    "label": "Hydrographics",
+    "description": "26%–35%"
+  },
+  "starport_code": "B",
+  "twilight_zone": false,
+  "biomass_rating": 4,
+  "native_sophont": false,
+  "extinct_sophont": false,
+  "resource_rating": 10,
+  "tidal_lock_note": null,
+  "refined_fuel_cost": 500,
+  "biodiversity_rating": 5,
+  "habitability_rating": 8,
+  "unrefined_fuel_cost": 100,
+  "biocomplexity_rating": 1,
+  "compatibility_rating": 4,
+  "current_temperature": 277.12596616022654,
+  "periapsis_temperature": 289.89268567958027,
+  "apoapsis_temperature": 287.31356195801874,
+  "hex": "1925",
+  "star_system_name": "Daedalus",
+  "subsector_name": "Desta",
+  "sector_name": "Ilelish",
+  "orbit_position": {
+    "x": 295987625.4091282,
+    "y": 23099809.015006475
+  },
+  "periapsis": 1.6751177963661197,
+  "apoapsis": 1.9846126429535065,
+  "orbit_type": 11,
+  "is_moon": false,
+  "orbiting_name": "F9 V",
+  "jump_shadow": {
+    "distance_km": 1129400,
+    "source_id": null,
+    "source_name": null,
+    "travel_times": {
+      "1g": 5.96,
+      "2g": 4.22,
+      "3g": 3.44,
+      "4g": 2.98,
+      "5g": 2.67,
+      "6g": 2.43
+    }
+  },
+  "starport": {
+    "label": "Starport",
+    "code": "B",
+    "quality": "Good",
+    "fuel": "Refined fuel",
+    "facilities": "Shipyard (spacecraft), Repair"
+  },
+  "size_detail": {
+    "label": "Size",
+    "code": "6",
+    "description": "9,600 km"
+  },
+  "city_count": 1
+}
