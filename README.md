@@ -52,12 +52,17 @@ The profile reads only what the map needs, and ignores the rest.
 | Ruins | `extinct_sophont`, or an empty world that kept a tech level |
 | Settlements | `population.cities` or `city_count` (names and capital types when given) |
 | Starport | `starport_code` |
-| Wasteland, resources | `tech_level.code`, `economics.resource_factor.value` |
+| Wasteland | `tech_level.code` |
+| Resources | `resource_rating` |
 
 ### Differences from the book
 
 - **No trade codes.** The rules lean on trade codes; here the planet itself answers questions such as
   `isDesert`, `isFrozenSolid`, `hasIceCaps` and `hasCropland`.
+- **Resources follow the resource rating.** The book places one resource in each of Resource-factor
+  triangles, on free land. Here the count comes from `resource_rating`: one hex at 6, two at 7 or 8,
+  three at 9 or 10 and four at 11 or more (none below 6). A resource can go on any hex, land or water,
+  even one that already carries another feature.
 - **Life shades the land.** Biomass ranks from bare ground (0 or less) through the book's olive Clear
   to deep green (10 and up). Life in an atmosphere hostile to Terran life (0, 1, A, B, C, F+) is tinted
   violet instead, and crops need a Terran biosphere with a rating of at least 3. Without a biomass

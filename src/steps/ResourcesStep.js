@@ -3,15 +3,14 @@
 const GenerationStep = require('./GenerationStep');
 const ResourceFeature = require('../features/ResourceFeature');
 
-/** Places one resource hex in each of Resource-factor randomly chosen triangles. */
+/** Marks randomly chosen hexes as resources. Any hex will do, land or water, whatever else is on it. */
 class ResourcesStep extends GenerationStep {
   static appliesTo(world) {
-    return world.profile.resourceFactor > 0;
+    return world.profile.resourceHexes > 0;
   }
 
   apply() {
-    const triangles = this.rng.sample(this.world.landTriangles(), this.profile.resourceFactor);
-    for (const triangle of triangles) this.scatter(triangle, 1, () => new ResourceFeature());
+    for (const hex of this.rng.sample(this.grid.hexes, this.profile.resourceHexes)) hex.addFeature(new ResourceFeature());
   }
 }
 

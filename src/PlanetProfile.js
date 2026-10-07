@@ -34,7 +34,7 @@ class PlanetProfile {
     this.lawLevel = PlanetProfile.digit(json.law_level?.code);
     this.techLevel = PlanetProfile.digit(json.tech_level?.code);
     this.starport = String(json.starport_code ?? json.starport?.code ?? 'X').toUpperCase();
-    this.resourceFactor = PlanetProfile.digit(json.economics?.resource_factor?.value);
+    this.resourceRating = PlanetProfile.digit(json.resource_rating ?? json.population?.biological_data?.resource_rating?.code);
     this.tidallyLockedToStar = Boolean(json.tidal_lock) && /^star$/i.test(json.tidal_lock_target_type || '');
     this.extinctSophont = json.extinct_sophont === true || json.population?.extinct_sophont?.value === true;
     this.twilightZone = this.tidallyLockedToStar && json.twilight_zone === true;
@@ -117,6 +117,12 @@ class PlanetProfile {
   get hasIceCaps() {
     if (this.twilightZone) return false;
     return this.isIceCapped || (this.hydrographics >= 2 && this.climate.allowsIceCaps);
+  }
+
+  /** Hexes marked as resources: one at rating 6, two at 7-8, three at 9-10 and four at 11 or more. */
+  get resourceHexes() {
+    if (this.resourceRating < 6) return 0;
+    return Math.min(4, Math.floor((this.resourceRating - 3) / 2));
   }
 
   get hasStarport() {

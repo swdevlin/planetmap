@@ -67,3 +67,16 @@ test('hex digit codes such as A are read as numbers', () => {
   assert.strictEqual(PlanetProfile.digit('A'), 10);
   assert.strictEqual(PlanetProfile.digit(7), 7);
 });
+
+test('the resource rating sets how many hexes are marked as resources', () => {
+  const expected = { 0: 0, 5: 0, 6: 1, 7: 2, 8: 2, 9: 3, 10: 3, 11: 4, 15: 4 };
+  for (const [rating, hexes] of Object.entries(expected)) {
+    assert.strictEqual(profileFor({ resource_rating: Number(rating) }).resourceHexes, hexes, `rating ${rating}`);
+  }
+});
+
+test('the resource rating is read from the top level or from the biological data', () => {
+  assert.strictEqual(profileFor({ resource_rating: 'B' }).resourceRating, 11);
+  const nested = { resource_rating: undefined, population: { code: 4, biological_data: { resource_rating: { code: 9 } } } };
+  assert.strictEqual(profileFor(nested).resourceRating, 9);
+});
