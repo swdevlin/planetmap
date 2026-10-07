@@ -1,6 +1,6 @@
 'use strict';
 
-const BookSymbol = require('./BookSymbol');
+const VectorSymbol = require('./VectorSymbol');
 const Feature = require('./Feature');
 
 class RuinsFeature extends Feature {
@@ -9,7 +9,7 @@ class RuinsFeature extends Feature {
   }
 
   draw(x, y) {
-    return BookSymbol.forNumber(26).draw(x, y, Feature.INK);
+    return VectorSymbol.forNumber(26).draw(x, y, Feature.INK);
   }
 }
 

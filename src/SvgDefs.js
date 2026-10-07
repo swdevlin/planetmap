@@ -22,13 +22,20 @@ const WATER_PATTERN =
   '<pattern id="hexTextureWater" patternUnits="userSpaceOnUse" width="192" height="192">' +
   '<rect width="192" height="192" filter="url(#hexTextureWaterFilter)"/></pattern>';
 
+// A tight, faint halo under each map symbol's stroke, like the bloom on a vector display.
+const PHOSPHOR_FILTER =
+  '<filter id="phosphor" x="-50%" y="-50%" width="200%" height="200%">' +
+  '<feGaussianBlur in="SourceGraphic" stdDeviation="0.6" result="blur"/>' +
+  '<feComponentTransfer in="blur" result="halo"><feFuncA type="linear" slope="0.6"/></feComponentTransfer>' +
+  '<feMerge><feMergeNode in="halo"/><feMergeNode in="SourceGraphic"/></feMerge></filter>';
+
 /**
  * Reusable SVG definitions: the noise filters and patterns that give land and
- * water hexes their texture.
+ * water hexes their texture, and the glow on map symbols.
  */
 class SvgDefs {
   static markup() {
-    return `<defs>${LAND_FILTER}${LAND_PATTERN}${WATER_FILTER}${WATER_PATTERN}</defs>`;
+    return `<defs>${LAND_FILTER}${LAND_PATTERN}${WATER_FILTER}${WATER_PATTERN}${PHOSPHOR_FILTER}</defs>`;
   }
 
   /** The fill that overlays the texture for a terrain, as a url() reference. */

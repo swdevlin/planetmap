@@ -95,7 +95,7 @@ has a health check on `/health` that deployment tooling can wait for before swit
 | `src/Biosphere.js` | Native life: land colour, alien life and cropland |
 | `src/WorldBuilder.js` | Runs the generation steps in rulebook order |
 | `src/steps/` | One class per step of the procedure |
-| `src/features/` | Hex features and the book's symbols |
+| `src/features/` | Hex features, their vector-display symbols, and the book's symbols they redraw |
 | `src/MapRenderer.js`, `src/Legend.js` | SVG output |
 | `testdata/` | Sample planets, including a size 6 world and a tidally locked one |
 | `tools/` | Rebuilds `src/features/bookSymbols.json` from your own copy of the rulebook |
@@ -105,8 +105,8 @@ has a health check on `/health` that deployment tooling can wait for before swit
 The code is released under the [MIT licence](LICENSE). That licence covers the code only, not the
 Traveller material described below.
 
-The map symbols in `src/features/bookSymbols.json` are traced from the Traveller5 rulebook, which is not
-included in this repository.
+The symbols in `src/features/bookSymbols.json` are traced from the Traveller5 rulebook, which is not
+included in this repository. The map draws redrawn vector versions of them (`src/features/VectorSymbol.js`).
 
 ### Far Future Enterprises license
 

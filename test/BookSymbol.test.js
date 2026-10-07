@@ -3,8 +3,6 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const BookSymbol = require('../src/features/BookSymbol');
-const MountainFeature = require('../src/features/MountainFeature');
-const StarportFeature = require('../src/features/StarportFeature');
 
 test('all 54 symbols from the book are available', () => {
   const numbers = BookSymbol.all().map((symbol) => symbol.number);
@@ -37,9 +35,4 @@ test('a symbol is drawn centred on the given point in the given colour', () => {
   const svg = BookSymbol.forNumber(21).draw(100, 50, 'red');
   assert.ok(svg.includes('translate(100 50)') && svg.includes('fill:red'));
   assert.strictEqual(BookSymbol.forNumber(11).draw(0, 0, 'red'), '');
-});
-
-test('map features draw the book symbols', () => {
-  assert.ok(new MountainFeature().draw(0, 0).includes(BookSymbol.forNumber(21).path));
-  assert.ok(new StarportFeature().draw(0, 0).includes(BookSymbol.forNumber(56).path));
 });

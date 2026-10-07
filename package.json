@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node --test --test-name-pattern=. test/Rng.test.js test/PlanetProfile.test.js test/Biosphere.test.js test/WorldGrid.test.js test/MapService.test.js test/PlanetMapServer.test.js test/Liquid.test.js test/HexPainter.test.js test/BookSymbol.test.js"
+    "test": "node --test --test-name-pattern=. test/Rng.test.js test/PlanetProfile.test.js test/Biosphere.test.js test/WorldGrid.test.js test/MapService.test.js test/PlanetMapServer.test.js test/Liquid.test.js test/HexPainter.test.js test/BookSymbol.test.js test/VectorSymbol.test.js"
   },
   "engines": {
     "node": ">=20"

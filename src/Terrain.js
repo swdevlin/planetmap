@@ -53,7 +53,7 @@ class Terrain {
 Terrain.CLEAR = new Terrain('clear', 'Clear', Colour.fromHex('#7f8a47'), 'land');
 Terrain.MOUNTAINS = new Terrain('mountains', 'Mountain terrain', Colour.fromHex('#bab6af'), 'land');
 Terrain.DESERT = new Terrain('desert', 'Desert', Colour.fromHex('#ffffcc'), 'land');
-Terrain.BAKED = new Terrain('baked', 'Baked Lands', Colour.fromHex('#ff7733'), 'land');
+Terrain.BAKED = new Terrain('baked', 'Baked Lands', Colour.fromHex('#b8673e'), 'land');
 Terrain.FROZEN = new Terrain('frozen', 'Frozen Land', Colour.fromHex('#dbdfb9'), 'land');
 Terrain.ICE_FIELD = new Terrain('icefield', 'Ice Field', Colour.fromHex('#e6ecff'), 'land');
 Terrain.ICE_CAP = new Terrain('icecap', 'Ice cap', Colour.fromHex('#ffffff'), 'land');
