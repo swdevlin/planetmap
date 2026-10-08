@@ -7,7 +7,7 @@ const Xml = require('./Xml');
 
 /**
  * The legend shown beneath the map: one entry for each kind of terrain and
- * feature that actually appears on it, alphabetically, then the scale. A hex
+ * feature that actually appears on it, alphabetically. A hex
  * that is mostly hidden by the map's edges does not count as appearing.
  */
 class Legend {
@@ -65,30 +65,12 @@ class Legend {
     return background + feature.draw(x, y);
   }
 
-  scaleHex(x, y) {
-    const points = HexShape.points(x, y);
-    const km = this.world.profile.hexKilometres.toLocaleString('en-US');
-    const arrow = [
-      [-14, 0, 14, 0],
-      [-14, 0, -11, -3],
-      [-14, 0, -11, 3],
-      [11, -3, 14, 0],
-      [11, 3, 14, 0],
-    ]
-      .map(([x1, y1, x2, y2]) => `<line x1="${x + x1}" y1="${y + y1}" x2="${x + x2}" y2="${y + y2}" stroke-width="2px" stroke="black"/>`)
-      .join('');
-    return (
-      `<polygon points="${points}" style="stroke: ${HexShape.BORDER_COLOUR}; stroke-width: 1; fill: white;"/>${arrow}` +
-      `<text style="font-size:8px;font-family:Arial, sans-serif;fill:black;" x="${x - 14}" y="${y + 10}">${km} km</text>`
-    );
-  }
-
   /**
    * Draws the legend with its first row centred on `top`.
    * @returns {{svg: string, height: number}}
    */
   render(left, top, width) {
-    const items = [...this.entries, { label: 'Scale', icon: (x, y) => this.scaleHex(x, y) }];
+    const items = this.entries;
     const longest = Math.max(...items.map((item) => item.label.length));
     const columnWidth = longest * Legend.CHARACTER_WIDTH + Legend.COLUMN_PADDING;
     const columns = Math.max(1, Math.min(Legend.MAX_COLUMNS, Math.floor(width / columnWidth)));
