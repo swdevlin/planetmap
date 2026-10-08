@@ -1,6 +1,7 @@
 'use strict';
 
 const HexPainter = require('./HexPainter');
+const HexShape = require('./HexShape');
 const Legend = require('./Legend');
 const SettlementFeature = require('./features/SettlementFeature');
 const SvgDefs = require('./SvgDefs');
@@ -55,7 +56,7 @@ class MapRenderer {
   /** White triangles over the empty spaces between the caps, hiding the outer half of edge hexes. */
   gaps() {
     return this.grid.gaps
-      .map(([a, b, c]) => `<path d="M ${a.join(' ')} L ${b.join(' ')} L ${c.join(' ')}" style="stroke-width:2;stroke:black;fill:white"/>`)
+      .map(([a, b, c]) => `<path d="M ${a.join(' ')} L ${b.join(' ')} L ${c.join(' ')}" style="stroke-width:2;stroke:${HexShape.BORDER_COLOUR};fill:white"/>`)
       .join('');
   }
 
@@ -68,7 +69,7 @@ class MapRenderer {
 
   outlines() {
     return this.grid.extendedTriangles
-      .map((triangle) => this.polygon(triangle.vertices, 'stroke:black;stroke-width:2;fill:none'))
+      .map((triangle) => this.polygon(triangle.vertices, `stroke:${HexShape.BORDER_COLOUR};stroke-width:2;fill:none`))
       .join('');
   }
 

@@ -7,6 +7,7 @@
 class HexShape {
   static WIDTH = 32;
   static ROW_HEIGHT = 28;
+  static BORDER_COLOUR = '#444';
 
   static vertices(x, y) {
     return [
