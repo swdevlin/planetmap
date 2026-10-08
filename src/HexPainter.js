@@ -65,7 +65,7 @@ class HexPainter {
 
   polygon(points, fill, terrain) {
     return (
-      `<polygon points="${points}" style="stroke: black; stroke-width: 1; fill: ${fill};"/>` +
+      `<polygon points="${points}" style="stroke: ${HexShape.BORDER_COLOUR}; stroke-width: 1; fill: ${fill};"/>` +
       `<polygon points="${points}" style="stroke:none;pointer-events:none;fill:${SvgDefs.textureFor(terrain)}"/>`
     );
   }

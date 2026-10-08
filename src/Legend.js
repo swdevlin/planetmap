@@ -45,7 +45,7 @@ class Legend {
   terrainHex(x, y, terrain) {
     const points = HexShape.points(x, y);
     return (
-      `<polygon points="${points}" style="stroke: black; stroke-width: 1; fill: ${terrain.colour.toCss()};"/>` +
+      `<polygon points="${points}" style="stroke: ${HexShape.BORDER_COLOUR}; stroke-width: 1; fill: ${terrain.colour.toCss()};"/>` +
       `<polygon points="${points}" style="stroke:none;pointer-events:none;fill:${SvgDefs.textureFor(terrain)}"/>`
     );
   }
@@ -54,14 +54,14 @@ class Legend {
     const half = HexShape.halfPoints(x, y, side);
     return (
       this.terrainHex(x, y, this.world.landTerrain) +
-      `<polygon points="${half}" style="stroke: black; stroke-width: 1; fill: ${terrain.colour.toCss()};"/>` +
+      `<polygon points="${half}" style="stroke: ${HexShape.BORDER_COLOUR}; stroke-width: 1; fill: ${terrain.colour.toCss()};"/>` +
       `<polygon points="${half}" style="stroke:none;pointer-events:none;fill:${SvgDefs.textureFor(terrain)}"/>`
     );
   }
 
   /** Features are shown on a white hex, whatever terrain they stand on in the map. */
   featureHex(x, y, feature) {
-    const background = `<polygon points="${HexShape.points(x, y)}" style="stroke: black; stroke-width: 1; fill: white;"/>`;
+    const background = `<polygon points="${HexShape.points(x, y)}" style="stroke: ${HexShape.BORDER_COLOUR}; stroke-width: 1; fill: white;"/>`;
     return background + feature.draw(x, y);
   }
 
@@ -78,7 +78,7 @@ class Legend {
       .map(([x1, y1, x2, y2]) => `<line x1="${x + x1}" y1="${y + y1}" x2="${x + x2}" y2="${y + y2}" stroke-width="2px" stroke="black"/>`)
       .join('');
     return (
-      `<polygon points="${points}" style="stroke: black; stroke-width: 1; fill: white;"/>${arrow}` +
+      `<polygon points="${points}" style="stroke: ${HexShape.BORDER_COLOUR}; stroke-width: 1; fill: white;"/>${arrow}` +
       `<text style="font-size:8px;font-family:Arial, sans-serif;fill:black;" x="${x - 14}" y="${y + 10}">${km} km</text>`
     );
   }
