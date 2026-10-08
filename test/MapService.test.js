@@ -52,7 +52,7 @@ test('each settlement type has its own legend entry', () => {
   }
 });
 
-test('the legend scale is 1,000 km for normal worlds', () => {
+test('the map scale is 1,000 km for normal worlds', () => {
   assert.ok(draw(samplePlanet('size6.json')).svg.includes('1,000 km'));
 });
 
@@ -150,7 +150,7 @@ test('every legend entry has something on the map', () => {
     const { svg } = draw(samplePlanet(file));
     const legend = svg.slice(svg.lastIndexOf('</g>'));
     const labels = [...legend.matchAll(/>([^<]+)<\/text>/g)].map((m) => m[1]);
-    assert.ok(labels.includes('Scale'), file);
+    assert.ok(!labels.includes('Scale'), file);
     assert.strictEqual(new Set(labels).size, labels.length, `${file}: duplicate legend entries`);
   }
 });

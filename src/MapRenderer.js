@@ -35,6 +35,7 @@ class MapRenderer {
       `<clipPath id="mapWindow"><rect x="${grid.left}" y="${grid.top}" width="${grid.width}" height="${grid.bottom - grid.top}"/></clipPath>` +
       `<rect x="${viewX}" y="${viewY}" width="${viewWidth}" height="${viewHeight}" fill="white"/>` +
       `<g clip-path="url(#mapWindow)">${this.terrain()}${this.features()}${this.gaps()}${this.outlines()}${this.equator()}${this.settlementSymbols()}</g>` +
+      this.scale() +
       this.settlementLabels() +
       legend.svg +
       '</svg>'
@@ -58,6 +59,27 @@ class MapRenderer {
     return this.grid.gaps
       .map(([a, b, c]) => `<path d="M ${a.join(' ')} L ${b.join(' ')} L ${c.join(' ')}" style="stroke-width:2;stroke:${HexShape.BORDER_COLOUR};fill:white"/>`)
       .join('');
+  }
+
+  /** A hex with the distance across it, in the blank space between the third and fourth south cap triangles. */
+  scale() {
+    const grid = this.grid;
+    const x = grid.left + 3 * HexShape.WIDTH * grid.size;
+    const y = grid.rowY(2 * grid.size) + (2 / 3) * (grid.bottom - grid.rowY(2 * grid.size));
+    const km = this.world.profile.hexKilometres.toLocaleString('en-US');
+    const arrow = [
+      [-14, 0, 14, 0],
+      [-14, 0, -11, -3],
+      [-14, 0, -11, 3],
+      [11, -3, 14, 0],
+      [11, 3, 14, 0],
+    ]
+      .map(([x1, y1, x2, y2]) => `<line x1="${x + x1}" y1="${y + y1}" x2="${x + x2}" y2="${y + y2}" stroke-width="2px" stroke="black"/>`)
+      .join('');
+    return (
+      `<polygon points="${HexShape.points(x, y)}" style="stroke: ${HexShape.BORDER_COLOUR}; stroke-width: 1; fill: white;"/>${arrow}` +
+      `<text style="font-size:8px;font-family:Arial, sans-serif;fill:black;" text-anchor="middle" x="${x}" y="${y + 10}">${km} km</text>`
+    );
   }
 
   /** Dashed line round the middle of the world. */
