@@ -62,6 +62,27 @@ class World {
     }
     return cluster;
   }
+
+  /** Connected groups of non-pole hexes that satisfy `accept`, largest first. */
+  bodiesOf(accept) {
+    const seen = new Set();
+    const bodies = [];
+    for (const start of this.grid.hexes) {
+      if (seen.has(start) || start.isPole || !accept(start)) continue;
+      const body = [start];
+      seen.add(start);
+      for (let i = 0; i < body.length; i++) {
+        for (const neighbour of this.grid.neighboursOf(body[i])) {
+          if (!seen.has(neighbour) && !neighbour.isPole && accept(neighbour)) {
+            seen.add(neighbour);
+            body.push(neighbour);
+          }
+        }
+      }
+      bodies.push(body);
+    }
+    return bodies.sort((a, b) => b.length - a.length);
+  }
 }
 
 module.exports = World;

@@ -45,6 +45,7 @@ The profile reads only what the map needs, and ignores the rest.
 |---|---|
 | Grid size | `size_code` (at least 5 hexes per triangle edge; smaller worlds use smaller hexes and the legend says so) |
 | Oceans, deserts, ice caps | `hydrographics.code`, `hydrographics.liquid.value`, `atmosphere.code` |
+| Shape of oceans and continents | `hydrographics.distribution.code` (0–A; Mixed when missing) |
 | Climate (frozen, tundra, baked) | `temperature` (or `current_temperature`) |
 | Tidally locked worlds | `tidal_lock`, `tidal_lock_target_type` (must be `Star`), `twilight_zone` |
 | Life | `biomass_rating` |
@@ -70,6 +71,11 @@ The profile reads only what the map needs, and ignores the rest.
 - **Tidal locking** counts only when the world is locked to a star, and the twilight zone is drawn only
   when the JSON says it has one (a 3:2 resonance, for example, has none).
 - **Oceans** of liquids other than water are coloured by liquid.
+- **Surface distribution** shapes the lesser surface: the liquid at Hydrographics 5 or below, the land
+  above it. The code sets the share held in major bodies (0 none, 1 5–10%, 2 10–20% … 9 90–95% in one
+  body, A 95% or more in one body), and the rest is scattered as bodies of one to four hexes. A body is
+  major when it covers at least 3% of the surface, so on small worlds a low share can fall short of a
+  major body and be scattered instead. Bodies are kept a hex apart so they stay distinct.
 - **Settlements** on tidally locked worlds are placed along the twilight zones.
 
 ## Running it
