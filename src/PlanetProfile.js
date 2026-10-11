@@ -29,6 +29,7 @@ class PlanetProfile {
     this.atmosphere = PlanetProfile.digit(json.atmosphere?.code);
     this.hydrographics = PlanetProfile.digit(json.hydrographics?.code);
     this.liquid = Liquid.named(json.hydrographics?.liquid?.value);
+    this.distribution = PlanetProfile.distributionOf(json.hydrographics?.distribution?.code);
     this.population = PlanetProfile.digit(json.population?.code);
     this.government = PlanetProfile.digit(json.government?.code);
     this.lawLevel = PlanetProfile.digit(json.law_level?.code);
@@ -130,6 +131,12 @@ class PlanetProfile {
   }
 
   /** A numeric characteristic that may arrive as a number or as a hex digit such as "A". */
+  /** Surface distribution 0-A; Mixed (5) when the JSON leaves it out. */
+  static distributionOf(value) {
+    if (value === undefined || value === null || value === '') return 5;
+    return Math.min(10, Math.max(0, PlanetProfile.digit(value)));
+  }
+
   static digit(value) {
     if (typeof value === 'number') return Math.trunc(value);
     const parsed = parseInt(String(value ?? ''), 36);
