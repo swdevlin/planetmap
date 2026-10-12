@@ -1,0 +1,2 @@
+# Use Linux LF line endings for every text file, even when checked out on Windows
+* text=auto eol=lf

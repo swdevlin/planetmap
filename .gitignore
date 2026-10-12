@@ -9,3 +9,7 @@ node_modules/
 
 # Generated sample renders (rebuilt from testdata/)
 output/
+
+# Server state (deploy settings and the live blue/green colour)
+.env
+.active_colour

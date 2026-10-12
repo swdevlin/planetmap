@@ -94,9 +94,9 @@ docker build -t planetmap .
 docker run -p 3013:3013 planetmap
 ```
 
-`docker-compose.yml` defines a blue/green pair on ports 3001 and 3002. Run both, point the front proxy
-at whichever is live, and rebuild the idle colour first: `docker compose up -d --build green`. The image
-has a health check on `/health` that deployment tooling can wait for before switching traffic.
+`docker-compose.yml` defines a blue/green pair whose host ports come from `.env`. On the server, copy
+`.env.example` to `.env`, then run `./deploy.sh`: it rebuilds the idle colour, waits for its `/health`
+check to pass, and points the nginx upstream at it.
 
 ## Layout
 
