@@ -34,14 +34,21 @@ git pull --ff-only
 docker compose build "$NEW"
 docker compose up -d --no-deps --force-recreate "$NEW"
 
-CONTAINER="$(docker compose ps -q "$NEW")"
+# -a so a container that has already crashed is still found.
+CONTAINER="$(docker compose ps -a -q "$NEW")"
+if [[ -z "$CONTAINER" ]]; then
+  echo "No container found for $NEW; leaving $OLD live." >&2
+  exit 1
+fi
 echo 'Waiting for new container to become healthy...'
 deadline=$((SECONDS + HEALTH_TIMEOUT))
 while true; do
-  status="$(docker inspect -f '{{.State.Health.Status}}' "$CONTAINER")"
+  state="$(docker inspect -f '{{.State.Status}}' "$CONTAINER")"
+  status="$(docker inspect -f '{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' "$CONTAINER")"
   [[ "$status" == 'healthy' ]] && break
-  if [[ "$status" == 'unhealthy' ]] || (( SECONDS >= deadline )); then
-    echo "New container is '$status'; leaving $OLD live." >&2
+  # A crash shows up as exited, or as restarting under the restart policy.
+  if [[ "$status" == 'unhealthy' || "$state" =~ ^(exited|dead|restarting)$ ]] || (( SECONDS >= deadline )); then
+    echo "New container is $state ($status); leaving $OLD live." >&2
     docker compose logs --tail 50 "$NEW" >&2
     docker compose stop "$NEW"
     exit 1
@@ -56,8 +63,10 @@ if ! curl -fsS "http://127.0.0.1:${NEW_PORT}/health" > /dev/null; then
   exit 1
 fi
 
+HAD_SNIPPET=false
 if [[ -f "$UPSTREAM_SNIPPET" ]]; then
   sudo cp "$UPSTREAM_SNIPPET" "$UPSTREAM_SNIPPET.bak"
+  HAD_SNIPPET=true
 fi
 
 sudo tee "$UPSTREAM_SNIPPET" > /dev/null <<EOF
@@ -68,7 +77,12 @@ EOF
 
 if ! sudo nginx -t; then
   echo 'nginx config test failed; restoring previous upstream.' >&2
-  [[ -f "$UPSTREAM_SNIPPET.bak" ]] && sudo mv "$UPSTREAM_SNIPPET.bak" "$UPSTREAM_SNIPPET"
+  if [[ "$HAD_SNIPPET" == true ]]; then
+    sudo mv "$UPSTREAM_SNIPPET.bak" "$UPSTREAM_SNIPPET"
+  else
+    sudo rm -f "$UPSTREAM_SNIPPET"
+  fi
+  docker compose stop "$NEW"
   exit 1
 fi
 sudo systemctl reload nginx
