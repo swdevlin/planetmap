@@ -5,11 +5,11 @@ services:
     build: .
     image: planetmap:${TAG:-latest}
     ports:
-      - "3001:3013"
+      - "3014:3013"
     restart: unless-stopped
   green:
     build: .
     image: planetmap:${TAG:-latest}
     ports:
-      - "3002:3013"
+      - "3015:3013"
     restart: unless-stopped
