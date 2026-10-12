@@ -1,2 +1,2 @@
-# Shell scripts run on Linux; keep LF endings even when checked out on Windows
-*.sh text eol=lf
+# Use Linux LF line endings for every text file, even when checked out on Windows
+* text=auto eol=lf
