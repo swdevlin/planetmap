@@ -8,3 +8,7 @@ output
 test
 testdata
 tools
+.env
+.env.example
+.active_colour
+deploy.sh

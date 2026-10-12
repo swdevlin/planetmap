@@ -1,15 +1,16 @@
-# Blue/green pair: run both, point the front proxy at whichever is live, and
-# update the idle colour first (docker compose up -d --build green).
+# Blue/green pair: deploy.sh rebuilds the idle colour, waits for it to pass its health check and
+# points the nginx upstream at it. Host ports come from .env (see .env.example) and are bound to
+# loopback so only nginx can reach the containers.
 services:
   blue:
     build: .
     image: planetmap:${TAG:-latest}
     ports:
-      - "3014:3013"
+      - "127.0.0.1:${BLUE_PORT:?set BLUE_PORT in .env}:3013"
     restart: unless-stopped
   green:
     build: .
     image: planetmap:${TAG:-latest}
     ports:
-      - "3015:3013"
+      - "127.0.0.1:${GREEN_PORT:?set GREEN_PORT in .env}:3013"
     restart: unless-stopped
