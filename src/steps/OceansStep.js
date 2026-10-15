@@ -5,7 +5,8 @@ const IslandFeature = require('../features/IslandFeature');
 const MountainFeature = require('../features/MountainFeature');
 
 /**
- * Hydrographics x 10% of the surface becomes ocean. The Surface Distribution
+ * The Hydrographics percentage of the surface (code x 10% when the JSON gives
+ * no percentage) becomes ocean. The Surface Distribution
  * code says how the lesser surface (liquid up to Hydrographics 5, land above)
  * is split between major bodies and minor ones. Bodies are kept a hex apart so
  * they stay distinct. Mountains standing in the ocean become islands.
@@ -24,7 +25,7 @@ class OceansStep extends GenerationStep {
   static WATER_MAJORITY = 5;
 
   static appliesTo(world) {
-    return world.profile.hydrographics > 0;
+    return world.profile.hydrographicsPercentage > 0;
   }
 
   /** Smallest size of a major body on a surface of `hexCount` hexes. */
@@ -35,7 +36,7 @@ class OceansStep extends GenerationStep {
   apply() {
     const hexes = this.grid.hexes.filter((hex) => !hex.isPole);
     const hydrographics = Math.min(10, this.profile.hydrographics);
-    const waterTarget = Math.round((hexes.length * hydrographics) / 10);
+    const waterTarget = Math.round((hexes.length * this.profile.hydrographicsPercentage) / 100);
     const landIsLesser = hydrographics > OceansStep.WATER_MAJORITY;
     const lesser = landIsLesser ? hexes.length - waterTarget : waterTarget;
 

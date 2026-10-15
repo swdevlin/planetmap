@@ -45,6 +45,7 @@ The profile reads only what the map needs, and ignores the rest.
 |---|---|
 | Grid size | `size_code` (at least 5 hexes per triangle edge; smaller worlds use smaller hexes and the legend says so) |
 | Oceans, deserts, ice caps | `hydrographics.code`, `hydrographics.liquid.value`, `atmosphere.code` |
+| Ocean coverage | `hydrographics.percentage` (0–100) when given, otherwise `hydrographics.code` × 10% |
 | Shape of oceans and continents | `hydrographics.distribution.code` (0–A; Mixed when missing) |
 | Extent of the ice caps | `ice_caps.edge_latitude`, or else where `latitude_temperatures` falls to `ice_caps.edge_temperature_k` (or `melting_point_k`); ignored on worlds locked to their star |
 | Climate (frozen, tundra, baked) | `temperature` (or `current_temperature`) |

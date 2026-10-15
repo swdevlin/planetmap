@@ -9,9 +9,9 @@ const OceansStep = require('../src/steps/OceansStep');
 const { samplePlanet } = require('./helpers');
 
 /** Floods a size 8 world and returns its bodies of the lesser surface. */
-function lesserBodies(hydrographics, distribution, seed) {
+function lesserBodies(hydrographics, distribution, seed, percentage) {
   const json = samplePlanet('size6.json', { size_code: 8 });
-  json.hydrographics = { code: hydrographics, distribution: { code: distribution } };
+  json.hydrographics = { code: hydrographics, distribution: { code: distribution }, percentage };
   const world = new World(new PlanetProfile(json), new Rng(seed));
   new OceansStep(world).apply();
   const surface = world.grid.hexes.filter((hex) => !hex.isPole);
@@ -41,6 +41,24 @@ test('hydrographics sets how much of the surface is ocean', () => {
     const expected = Math.round((surface.length * lesser) / 10);
     assert.strictEqual(bodies.reduce((sum, body) => sum + body.length, 0), expected);
   }
+});
+
+test('a hydrographics percentage sets ocean coverage in place of the code', () => {
+  for (const [hydrographics, percentage] of [[3, 27], [8, 83]]) {
+    const { surface, bodies } = lesserBodies(hydrographics, 5, '7', percentage);
+    const water = Math.round((surface.length * percentage) / 100);
+    const expected = hydrographics <= 5 ? water : surface.length - water;
+    assert.strictEqual(bodies.reduce((sum, body) => sum + body.length, 0), expected);
+  }
+});
+
+test('the percentage falls back to the code and is kept within 0-100', () => {
+  assert.strictEqual(PlanetProfile.percentageOf({ code: 4 }), 40);
+  assert.strictEqual(PlanetProfile.percentageOf({ code: 'A', percentage: null }), 100);
+  assert.strictEqual(PlanetProfile.percentageOf({ code: 4, percentage: 'lots' }), 40);
+  assert.strictEqual(PlanetProfile.percentageOf({ code: 4, percentage: 43.5 }), 43.5);
+  assert.strictEqual(PlanetProfile.percentageOf({ code: 4, percentage: 120 }), 100);
+  assert.strictEqual(PlanetProfile.percentageOf(undefined), 0);
 });
 
 test('extremely dispersed surfaces have no major bodies', () => {

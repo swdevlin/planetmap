@@ -28,6 +28,7 @@ class PlanetProfile {
     }
     this.atmosphere = PlanetProfile.digit(json.atmosphere?.code);
     this.hydrographics = PlanetProfile.digit(json.hydrographics?.code);
+    this.hydrographicsPercentage = PlanetProfile.percentageOf(json.hydrographics);
     this.liquid = Liquid.named(json.hydrographics?.liquid?.value);
     this.distribution = PlanetProfile.distributionOf(json.hydrographics?.distribution?.code);
     this.population = PlanetProfile.digit(json.population?.code);
@@ -148,13 +149,23 @@ class PlanetProfile {
     return /^[A-E]$/.test(this.starport);
   }
 
-  /** A numeric characteristic that may arrive as a number or as a hex digit such as "A". */
   /** Surface distribution 0-A; Mixed (5) when the JSON leaves it out. */
   static distributionOf(value) {
     if (value === undefined || value === null || value === '') return 5;
     return Math.min(10, Math.max(0, PlanetProfile.digit(value)));
   }
 
+  /** Share of the surface that is liquid, 0-100: the JSON's percentage when given, otherwise code x 10. */
+  static percentageOf(hydrographics) {
+    const value = hydrographics?.percentage;
+    const percentage = Number(value);
+    if (value === undefined || value === null || value === '' || !Number.isFinite(percentage)) {
+      return Math.min(10, PlanetProfile.digit(hydrographics?.code)) * 10;
+    }
+    return Math.min(100, Math.max(0, percentage));
+  }
+
+  /** A numeric characteristic that may arrive as a number or as a hex digit such as "A". */
   static digit(value) {
     if (typeof value === 'number') return Math.trunc(value);
     const parsed = parseInt(String(value ?? ''), 36);
