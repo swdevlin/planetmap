@@ -12,6 +12,9 @@ class HexVisibility {
 
   static MINIMUM_FRACTION = 0.25;
 
+  /** How much of a hex must show for a symbol at its centre to be seen whole. */
+  static SYMBOL_FRACTION = 0.75;
+
   constructor(grid) {
     this.grid = grid;
     this.cache = new Map();
@@ -26,6 +29,17 @@ class HexVisibility {
   /** Whether enough of the hex shows for what is on it to count as appearing on the map. */
   isVisible(cell) {
     return this.fraction(cell) >= HexVisibility.MINIMUM_FRACTION;
+  }
+
+  /**
+   * Whether a symbol on the hex can be seen whole. A hex split by a gap between the caps shows
+   * one side of its symbol in each half, which together make the whole. The poles show only as
+   * slivers at each triangle's tip, so a symbol there is lost.
+   */
+  showsSymbolOn(hex) {
+    if (hex.isPole) return false;
+    const shown = hex.cells.reduce((sum, cell) => sum + this.fraction(cell), 0);
+    return shown >= HexVisibility.SYMBOL_FRACTION;
   }
 
   measure({ x, y }) {

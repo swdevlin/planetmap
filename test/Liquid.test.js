@@ -30,3 +30,8 @@ test('an unknown liquid is neutral grey, not water blue', () => {
   assert.strictEqual(unknown.colour.toCss(), 'rgb(154,154,154)');
   assert.ok(!unknown.isWater);
 });
+
+test('magma glows red-orange, brighter and more vivid than Baked Lands', () => {
+  assert.strictEqual(Liquid.named('Magma').colour.toCss(), 'rgb(255,122,31)');
+  assert.strictEqual(Liquid.named('lava').colour.toCss(), 'rgb(255,122,31)');
+});

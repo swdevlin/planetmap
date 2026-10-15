@@ -137,12 +137,27 @@ test('a barren world with no extinct sophont has no ruins', () => {
   assert.ok(draw({ ...planet, extinct_sophont: true }).svg.includes('>Ruins</text>'));
 });
 
-test('the legend omits items that are only on mostly hidden hexes', () => {
-  // Hydrographics 3 gives a one-row ice cap: just the pole hexes, which the map edges mostly hide.
-  assert.ok(!draw(samplePlanet('size6.json')).svg.includes('>Ice cap</text>'));
-  // A deeper ice cap shows plenty of full hexes.
-  const planet = samplePlanet('size6.json', { hydrographics: { code: 8, liquid: { value: 'Water' } } });
-  assert.ok(draw(planet).svg.includes('>Ice cap</text>'));
+test('the legend counts the slivers of mostly hidden hexes together', () => {
+  // Hydrographics 3 gives a one-row ice cap: just the pole hexes, each mostly hidden by the map
+  // edges, but together they show as white tips at every pole.
+  assert.ok(draw(samplePlanet('size6.json')).svg.includes('>Ice cap</text>'));
+  const capAt = (edge_latitude) => samplePlanet('size6.json', { ice_caps: { edge_latitude } });
+  assert.ok(draw(capAt(80.8)).svg.includes('>Ice cap</text>'));
+  assert.ok(!draw(capAt(90)).svg.includes('>Ice cap</text>'), 'an edge at the pole draws no cap');
+});
+
+test('a feature on a mostly hidden hex does not reach the legend', () => {
+  const Legend = require('../src/Legend');
+  const PlanetProfile = require('../src/PlanetProfile');
+  const Rng = require('../src/Rng');
+  const WorldBuilder = require('../src/WorldBuilder');
+  const RuinsFeature = require('../src/features/RuinsFeature');
+
+  // The pole hex shows only as tips of the triangles, where its centre, and so its symbol, is hidden.
+  const world = new WorldBuilder(new PlanetProfile(samplePlanet('size6.json', { ice_caps: { edge_latitude: 90 } })), new Rng('1')).build();
+  const pole = world.grid.cells.find((cell) => cell.hex.row === 0).hex;
+  pole.features = [new RuinsFeature()];
+  assert.ok(!new Legend(world).entries.some((entry) => entry.label === 'Ruins'));
 });
 
 test('every legend entry has something on the map', () => {
@@ -190,4 +205,70 @@ test('the legend shows every feature on a white hex, including Island', () => {
   const legend = svg.slice(svg.lastIndexOf('</g>'));
   const islandIcon = legend.slice(legend.lastIndexOf('<polygon', legend.indexOf('>Island</text>') - 1500), legend.indexOf('>Island</text>'));
   assert.ok(islandIcon.includes('fill: white'), 'Island legend hex is white');
+});
+
+test('ice cap data sets how far the caps reach from each pole', () => {
+  const Rng = require('../src/Rng');
+  const PlanetProfile = require('../src/PlanetProfile');
+  const Terrain = require('../src/Terrain');
+  const WorldBuilder = require('../src/WorldBuilder');
+
+  // Size 6: 10 degrees a row, so an edge at 64.3 degrees reaches the rows centred at 90, 80 and 70.
+  // Hydrographics 3 makes the solid cap one row; past it only the oceans freeze.
+  const planet = samplePlanet('size6.json', { ice_caps: { edge_latitude: 64.3 } });
+  const world = new WorldBuilder(new PlanetProfile(planet), new Rng('5')).build();
+  const inRows = (rows) => world.grid.hexesInRows(rows);
+  assert.ok(inRows([0, 18]).every((hex) => hex.terrain === Terrain.ICE_CAP));
+  assert.ok(inRows([1, 2, 16, 17]).every((hex) => hex.terrain === Terrain.ICE_CAP || hex.terrain === Terrain.FROZEN));
+  assert.ok(inRows([1, 2, 16, 17]).some((hex) => hex.terrain === Terrain.FROZEN), 'land in the cold band shows');
+  const capRows = new Set(world.grid.hexes.filter((hex) => hex.terrain === Terrain.ICE_CAP).map((hex) => hex.row));
+  assert.ok([...capRows].every((row) => row <= 2 || row >= 16));
+});
+
+test('caps reaching the equator freeze the oceans but leave the land showing', () => {
+  const Rng = require('../src/Rng');
+  const PlanetProfile = require('../src/PlanetProfile');
+  const Terrain = require('../src/Terrain');
+  const WorldBuilder = require('../src/WorldBuilder');
+
+  const planet = samplePlanet('size6.json', { hydrographics: { code: 4 }, ice_caps: { coverage: 1, edge_latitude: 0 } });
+  const world = new WorldBuilder(new PlanetProfile(planet), new Rng('5')).build();
+  const caps = world.grid.hexes.filter((hex) => hex.terrain === Terrain.ICE_CAP).length;
+  const frozen = world.grid.hexes.filter((hex) => hex.terrain === Terrain.FROZEN).length;
+  assert.ok(frozen > caps, `${frozen} frozen land, ${caps} ice cap`);
+  assert.ok(!world.grid.hexes.some((hex) => hex.terrain.isWater), 'every ocean is frozen');
+  const { svg } = draw(planet);
+  assert.ok(svg.includes('>Ice cap</text>') && svg.includes('>Frozen Land</text>'));
+});
+
+test('polar caps of frozen magma are drawn as Baked Lands, not ice', () => {
+  const Rng = require('../src/Rng');
+  const PlanetProfile = require('../src/PlanetProfile');
+  const Terrain = require('../src/Terrain');
+  const WorldBuilder = require('../src/WorldBuilder');
+
+  const planet = samplePlanet('size6.json', { temperature: 972, ice_caps: { edge_latitude: 84.5, melting_point_k: 900 } });
+  const world = new WorldBuilder(new PlanetProfile(planet), new Rng('5')).build();
+  assert.ok(!world.grid.hexes.some((hex) => hex.terrain === Terrain.ICE_CAP));
+  const lastRow = 3 * world.profile.gridSize;
+  const poles = world.grid.hexes.filter((hex) => hex.row === 0 || hex.row === lastRow);
+  assert.ok(poles.length && poles.every((hex) => hex.terrain === Terrain.BAKED));
+  assert.ok(!draw(planet).svg.includes('>Ice cap</text>'));
+});
+
+test('resources go only on hexes that show whole, never under the gaps between triangles', () => {
+  const HexVisibility = require('../src/HexVisibility');
+  const PlanetProfile = require('../src/PlanetProfile');
+  const ResourceFeature = require('../src/features/ResourceFeature');
+  const Rng = require('../src/Rng');
+  const WorldBuilder = require('../src/WorldBuilder');
+
+  for (let seed = 1; seed <= 20; seed++) {
+    const profile = new PlanetProfile(samplePlanet('size6.json', { resource_rating: 11 }));
+    const world = new WorldBuilder(profile, new Rng(String(seed))).build();
+    const visibility = new HexVisibility(world.grid);
+    const resources = world.grid.hexes.filter((hex) => hex.hasFeatureOf(ResourceFeature));
+    assert.strictEqual(resources.length, 4, `seed ${seed}`);
+    assert.ok(resources.every((hex) => visibility.showsSymbolOn(hex)), `seed ${seed}`);
+  }
 });

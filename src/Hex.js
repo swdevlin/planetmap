@@ -5,7 +5,8 @@ const Terrain = require('./Terrain');
 
 /**
  * One world hex. A hex that appears at more than one place on the flattened
- * map (the poles, and hexes on the east/west wrap) is still a single Hex, so
+ * map (the poles, hexes on the east/west wrap, and hexes split by the gaps
+ * between the cap triangles) is still a single Hex, so
  * every place it is drawn shows the same terrain and features.
  */
 class Hex {

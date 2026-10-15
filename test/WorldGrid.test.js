@@ -37,3 +37,15 @@ test('neighbours wrap around the world', () => {
   const westmost = grid.cellsInRow(9)[0].hex;
   assert.ok(grid.neighboursOf(westmost).length >= 5);
 });
+
+test('a hex split by the gap between two cap triangles is one hex, half on each side', () => {
+  const grid = new WorldGrid(6);
+  // Row 3 of the north cap: triangle 0 ends at x 154 and triangle 1 starts at x 250.
+  const cellAt = (row, x) => grid.cellsInRow(row).find((cell) => cell.x === x);
+  assert.strictEqual(cellAt(3, 154).hex, cellAt(3, 250).hex);
+  assert.strictEqual(cellAt(3, 154).hex.cells.length, 2);
+  // In the south cap the first triangle's west edge joins the last triangle's east edge.
+  assert.strictEqual(cellAt(13, 122).hex, cellAt(13, 1050).hex);
+  // Five gaps a cap, each joining size - 1 pairs.
+  assert.strictEqual(grid.hexes.length, 412 - 2 * 5 * 5);
+});

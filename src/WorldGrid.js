@@ -10,7 +10,8 @@ const Triangle = require('./Triangle');
  * five triangles, a band of ten, and a south cap of five.
  *
  * The map is one world-circumference wide. Hexes cut by the east and west
- * edges of the window, and the poles, are drawn in more than one place but
+ * edges of the window, the poles, and the hexes split by the gaps between the
+ * cap triangles (half shows on each side) are drawn in more than one place but
  * are each a single Hex.
  *
  * Coordinates: x is in pixels, rows run 0 (north pole) to 3 x size (south pole).
@@ -141,16 +142,44 @@ class WorldGrid {
     this.cellIndex.set(`${row},${x}`, cell);
   }
 
-  /** The Hex for a position, creating it on first sight. The east edge is the west edge again. */
+  /**
+   * The Hex for a position, creating it on first sight. The east edge is the west edge again,
+   * and a hex on a cap triangle's edge is the same hex as the one across the gap beside it.
+   */
   hexFor(row, x) {
     if (row === 0) return this.northPole;
     if (row === 3 * this.size) return this.southPole;
-    const canonicalX = x === this.right ? this.left : x;
-    const existing = this.cellIndex.get(`${row},${canonicalX}`);
-    if (existing) return existing.hex;
+    for (const sameX of [x, this.acrossGap(row, x)]) {
+      if (sameX === null) continue;
+      const existing = this.cellIndex.get(`${row},${sameX === this.right ? this.left : sameX}`);
+      if (existing) return existing.hex;
+    }
     const hex = this.createHex(row);
     this.hexes.push(hex);
     return hex;
+  }
+
+  /**
+   * Where the other half of an edge hex of a cap triangle sits, across the gap from `x`; null
+   * when the position is not on such an edge. The gaps meet the caps' edges at their full width
+   * at the poles and close to nothing where the caps meet the band.
+   */
+  acrossGap(row, x) {
+    const size = this.size;
+    const north = row > 0 && row < size;
+    const south = row > 2 * size && row < 3 * size;
+    if (!north && !south) return null;
+    const step = HexShape.WIDTH * size;
+    const fromPole = north ? row : 3 * size - row;
+    const firstApex = north ? this.left : this.left + WorldGrid.HALF * size;
+    const offset = (((x - firstApex) % step) + step) % step;
+    let partner = null;
+    if (offset === WorldGrid.HALF * fromPole) partner = x + step - 2 * WorldGrid.HALF * fromPole;
+    else if (offset === step - WorldGrid.HALF * fromPole) partner = x - step + 2 * WorldGrid.HALF * fromPole;
+    if (partner === null) return null;
+    if (partner < this.left) partner += this.width;
+    if (partner > this.right) partner -= this.width;
+    return partner;
   }
 
   assignTriangles() {

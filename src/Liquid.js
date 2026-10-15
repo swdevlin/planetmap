@@ -66,6 +66,7 @@ Liquid.entries = [
   liquid('Oxygen', '#8fc6ec'),
   liquid('Nitrogen', '#dfe9f3'),
   liquid('Carbon dioxide', '#c8c8d0'),
+  liquid('Magma', '#ff7a1f', ['Magma', 'Lava']),
 ];
 
 module.exports = Liquid;

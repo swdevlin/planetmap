@@ -80,3 +80,60 @@ test('the resource rating is read from the top level or from the biological data
   const nested = { resource_rating: undefined, population: { code: 4, biological_data: { resource_rating: { code: 9 } } } };
   assert.strictEqual(profileFor(nested).resourceRating, 9);
 });
+
+const TEMPERATURES = [
+  { latitude: 0, temperature: 376.5 },
+  { latitude: 15, temperature: 376.5 },
+  { latitude: 30, temperature: 376.5 },
+  { latitude: 45, temperature: 361.1 },
+  { latitude: 60, temperature: 335.1 },
+  { latitude: 75, temperature: 303.7 },
+  { latitude: 90, temperature: 265.7 },
+];
+const ICE_CAPS = { liquid: 'Molten Potassium', melting_point_k: 336.7, edge_temperature_k: 326.7, edge_latitude: 64.3, coverage: 0.099, note: null };
+
+test('without ice cap data the rulebook decides the ice caps', () => {
+  assert.ok(!profileFor({}).hasIceCapData);
+});
+
+test('the ice cap edge latitude is read from the JSON', () => {
+  const profile = profileFor({ latitude_temperatures: TEMPERATURES, ice_caps: ICE_CAPS });
+  assert.ok(profile.hasIceCapData && profile.hasIceCaps);
+  assert.strictEqual(profile.iceCapEdgeLatitude, 64.3);
+});
+
+test('without an edge latitude, the edge is where the temperatures fall to the edge temperature', () => {
+  const profile = profileFor({ latitude_temperatures: TEMPERATURES, ice_caps: { ...ICE_CAPS, edge_latitude: null } });
+  assert.ok(Math.abs(profile.iceCapEdgeLatitude - 64.01) < 0.01, `${profile.iceCapEdgeLatitude}`);
+});
+
+test('ice cap data with no edge means no ice caps, even where the rulebook would draw them', () => {
+  const tooWarm = TEMPERATURES.map((point) => ({ ...point, temperature: 400 }));
+  const profile = profileFor({ latitude_temperatures: tooWarm, ice_caps: { ...ICE_CAPS, edge_latitude: null } });
+  assert.ok(profile.hasIceCapData && !profile.hasIceCaps);
+});
+
+test('worlds locked to their star ignore the ice cap data', () => {
+  const locked = { tidal_lock: '1:1', tidal_lock_target_type: 'Star' };
+  assert.ok(!profileFor({ ...locked, ice_caps: ICE_CAPS }).hasIceCapData);
+});
+
+test('only a 1:1 lock to a star counts as tidally locked', () => {
+  for (const tidalLock of ['prograde', 'retrograde', '3:2', 'day-stretch', null]) {
+    assert.ok(!profileFor({ tidal_lock: tidalLock, tidal_lock_target_type: 'Star' }).tidallyLockedToStar, tidalLock);
+  }
+  assert.ok(profileFor({ tidal_lock: '1:1', tidal_lock_target_type: 'Star' }).tidallyLockedToStar);
+});
+
+test('a world slowed by tidal drag uses its ice cap data', () => {
+  const slowed = { tidal_lock: 'prograde', tidal_lock_target_type: 'Star', twilight_zone: false };
+  const profile = profileFor({ ...slowed, latitude_temperatures: TEMPERATURES, ice_caps: ICE_CAPS });
+  assert.ok(profile.hasIceCapData && profile.hasIceCaps);
+  assert.strictEqual(profile.iceCapEdgeLatitude, 64.3);
+});
+
+test('caps of a liquid that freezes at baking temperatures are crust, not ice', () => {
+  assert.ok(profileFor({ ice_caps: { ...ICE_CAPS, liquid: 'Magma', melting_point_k: 900 } }).iceCapsAreCrust);
+  assert.ok(!profileFor({ ice_caps: ICE_CAPS }).iceCapsAreCrust);
+  assert.ok(!profileFor({}).iceCapsAreCrust);
+});

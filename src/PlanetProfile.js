@@ -36,12 +36,29 @@ class PlanetProfile {
     this.techLevel = PlanetProfile.digit(json.tech_level?.code);
     this.starport = String(json.starport_code ?? json.starport?.code ?? 'X').toUpperCase();
     this.resourceRating = PlanetProfile.digit(json.resource_rating ?? json.population?.biological_data?.resource_rating?.code);
-    this.tidallyLockedToStar = Boolean(json.tidal_lock) && /^star$/i.test(json.tidal_lock_target_type || '');
+    // Only a 1:1 lock fixes a day side; prograde, retrograde, 3:2 and day-stretch worlds still turn.
+    this.tidallyLockedToStar = json.tidal_lock === '1:1' && /^star$/i.test(json.tidal_lock_target_type || '');
     this.extinctSophont = json.extinct_sophont === true || json.population?.extinct_sophont?.value === true;
     this.twilightZone = this.tidallyLockedToStar && json.twilight_zone === true;
     this.biosphere = Biosphere.from(json.biomass_rating ?? json.population?.biological_data?.biomass_rating?.value, this.atmosphere);
     this.climate = new Climate(Number(json.temperature ?? json.current_temperature) || PlanetProfile.DEFAULT_TEMPERATURE);
     this.settlements = PlanetProfile.settlementsIn(json);
+    this.iceCapEdgeLatitude = PlanetProfile.iceCapEdgeLatitudeIn(json);
+    const meltingPoint = json.ice_caps?.melting_point_k;
+    this.iceCapMeltingPoint = Number.isFinite(meltingPoint) ? meltingPoint : undefined;
+  }
+
+  /** Whether the caps freeze solid at temperatures that bake land (magma, say), so are crust, not ice. */
+  get iceCapsAreCrust() {
+    return this.iceCapMeltingPoint >= Climate.BAKED_FROM;
+  }
+
+  /**
+   * Whether the JSON's ice-cap extent is used, rather than the rulebook. Not on worlds locked to
+   * their star: their cold is on the night side, not at the poles.
+   */
+  get hasIceCapData() {
+    return this.iceCapEdgeLatitude !== undefined && !this.tidallyLockedToStar;
   }
 
   /** Hexes along a triangle edge: one per size, but never fewer than five. */
@@ -117,6 +134,7 @@ class PlanetProfile {
   /** Whether the ice caps are drawn: not on tidally locked or too-hot worlds. */
   get hasIceCaps() {
     if (this.twilightZone) return false;
+    if (this.hasIceCapData) return this.iceCapEdgeLatitude !== null && this.iceCapEdgeLatitude < 90;
     return this.isIceCapped || (this.hydrographics >= 2 && this.climate.allowsIceCaps);
   }
 
@@ -154,6 +172,36 @@ class PlanetProfile {
       settlements.push(new Settlement(name, type));
     }
     return settlements;
+  }
+
+  /**
+   * The latitude, in degrees, where the ice caps end: undefined when the JSON has no `ice_caps`,
+   * null when it has them but they have no edge. Uses `ice_caps.edge_latitude` when given, otherwise
+   * finds where `latitude_temperatures` falls to the edge temperature (or the melting point).
+   */
+  static iceCapEdgeLatitudeIn(json) {
+    const iceCaps = json.ice_caps;
+    if (!iceCaps || typeof iceCaps !== 'object') return undefined;
+    if (Number.isFinite(iceCaps.edge_latitude)) return iceCaps.edge_latitude;
+    const threshold = Number.isFinite(iceCaps.edge_temperature_k) ? iceCaps.edge_temperature_k : iceCaps.melting_point_k;
+    if (!Number.isFinite(threshold) || !Array.isArray(json.latitude_temperatures)) return null;
+    return PlanetProfile.latitudeAtTemperature(json.latitude_temperatures, threshold);
+  }
+
+  /** The lowest latitude at or below `temperature`, interpolating between readings; null if none is. */
+  static latitudeAtTemperature(readings, temperature) {
+    const points = readings
+      .filter((point) => Number.isFinite(point?.latitude) && Number.isFinite(point?.temperature))
+      .sort((a, b) => a.latitude - b.latitude);
+    for (let i = 0; i < points.length; i++) {
+      const point = points[i];
+      if (point.temperature > temperature) continue;
+      const previous = points[i - 1];
+      if (!previous) return point.latitude;
+      const share = (previous.temperature - temperature) / (previous.temperature - point.temperature);
+      return previous.latitude + share * (point.latitude - previous.latitude);
+    }
+    return null;
   }
 }
 

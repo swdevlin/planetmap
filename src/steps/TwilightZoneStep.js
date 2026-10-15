@@ -37,8 +37,11 @@ class TwilightZoneStep extends GenerationStep {
 
     for (const hex of grid.hexes) {
       if (hex.isPole) continue;
-      const u = (((hex.cells[0].x - zoneX) % width) + width) % width;
-      if (Math.min(u, width - u, Math.abs(u - width / 2)) <= TwilightZoneStep.HALF) this.world.twilightHexes.push(hex);
+      const along = (cell) => (((cell.x - zoneX) % width) + width) % width;
+      const inZone = (v) => Math.min(v, width - v, Math.abs(v - width / 2)) <= TwilightZoneStep.HALF;
+      // A hex split by a gap between the caps is in the zone if either half is.
+      if (hex.cells.some((cell) => inZone(along(cell)))) this.world.twilightHexes.push(hex);
+      const u = along(hex.cells[0]);
       this.paint(hex, u, baked, (terrain) => (terrain.isWater && this.profile.climate.isBaking ? terrain : terrain.baked()));
       this.paint(hex, u, frozen, (terrain) => terrain.frozen());
       if (this.coversFully(u, frozen) && Math.abs(u - frozenCentre) <= iceCapRadius) {

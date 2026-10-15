@@ -46,8 +46,9 @@ The profile reads only what the map needs, and ignores the rest.
 | Grid size | `size_code` (at least 5 hexes per triangle edge; smaller worlds use smaller hexes and the legend says so) |
 | Oceans, deserts, ice caps | `hydrographics.code`, `hydrographics.liquid.value`, `atmosphere.code` |
 | Shape of oceans and continents | `hydrographics.distribution.code` (0–A; Mixed when missing) |
+| Extent of the ice caps | `ice_caps.edge_latitude`, or else where `latitude_temperatures` falls to `ice_caps.edge_temperature_k` (or `melting_point_k`); ignored on worlds locked to their star |
 | Climate (frozen, tundra, baked) | `temperature` (or `current_temperature`) |
-| Tidally locked worlds | `tidal_lock`, `tidal_lock_target_type` (must be `Star`), `twilight_zone` |
+| Tidally locked worlds | `tidal_lock` (must be `1:1`), `tidal_lock_target_type` (must be `Star`), `twilight_zone` |
 | Life | `biomass_rating` |
 | Cropland | `population.code`, plus the atmosphere, hydrographics and biomass above |
 | Ruins | `extinct_sophont`, or an empty world that kept a tech level |
@@ -68,9 +69,14 @@ The profile reads only what the map needs, and ignores the rest.
   to deep green (10 and up). Life in an atmosphere hostile to Terran life (0, 1, A, B, C, F+) is tinted
   violet instead, and crops need a Terran biosphere with a rating of at least 3. Without a biomass
   rating the map is drawn as the rulebook would draw it.
-- **Tidal locking** counts only when the world is locked to a star, and the twilight zone is drawn only
-  when the JSON says it has one (a 3:2 resonance, for example, has none).
-- **Oceans** of liquids other than water are coloured by liquid.
+- **Tidal locking** counts only for a 1:1 lock to a star; worlds whose spin is merely slowed (prograde,
+  retrograde, 3:2, day-stretch) still turn, so they keep polar ice caps. The twilight zone is drawn only
+  when the JSON says it has one.
+- **Ice caps** reach down to the edge latitude when the JSON gives `ice_caps`: a row is ice when its
+  centre is at or beyond that latitude. Without `ice_caps`, or on a world locked to its star, the
+  rulebook's Hydrographics/2 rows (plus 1D on ice-capped worlds) are used. Caps whose
+  `ice_caps.melting_point_k` is 373 K or more (frozen magma, say) are solid crust, drawn as Baked Lands.
+- **Oceans** of liquids other than water are coloured by liquid (magma or lava is a bright orange).
 - **Surface distribution** shapes the lesser surface: the liquid at Hydrographics 5 or below, the land
   above it. The code sets the share held in major bodies (0 none, 1 5–10%, 2 10–20% … 9 90–95% in one
   body, A 95% or more in one body), and the rest is scattered as bodies of one to four hexes. A body is
