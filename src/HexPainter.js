@@ -35,15 +35,36 @@ class HexPainter {
     return HexPainter.COLOUR_SPREAD - (HexPainter.COLOUR_SPREAD - HexPainter.PALE_COLOUR_SPREAD) * t;
   }
 
-  /** The terrain colour and texture of a cell, including any half-hex overlay. */
-  paintTerrain(cell) {
+  /** The flat terrain colours of a cell, including any half-hex overlay. Texture and borders are layered separately. */
+  paintFills(cell) {
     const { hex, x, y } = cell;
-    let svg = this.polygon(HexShape.points(x, y), this.shadeOf(hex, 'base', hex.terrain), hex.terrain);
+    let svg = this.shape(HexShape.points(x, y), `stroke:none;fill:${this.shadeOf(hex, 'base', hex.terrain)}`);
     if (hex.overlay) {
       const { side, terrain } = hex.overlay;
-      svg += this.polygon(HexShape.halfPoints(x, y, side), this.shadeOf(hex, 'overlay', terrain), terrain);
+      svg += this.shape(HexShape.halfPoints(x, y, side), `stroke:none;fill:${this.shadeOf(hex, 'overlay', terrain)}`);
     }
     return svg;
+  }
+
+  /** The hex outline, and the edge of any half-hex overlay. */
+  paintBorders(cell) {
+    const { hex, x, y } = cell;
+    const style = `fill:none;stroke:${HexShape.BORDER_COLOUR};stroke-width:1`;
+    let svg = this.shape(HexShape.points(x, y), style);
+    if (hex.overlay) svg += this.shape(HexShape.halfPoints(x, y, hex.overlay.side), style);
+    return svg;
+  }
+
+  /** The areas of a cell that take each texture, as [texture, points] pairs. An overlay replaces the half of the base it covers. */
+  textureAreas(cell) {
+    const { hex, x, y } = cell;
+    if (!hex.overlay) return [[hex.terrain.texture, HexShape.points(x, y)]];
+    const { side, terrain } = hex.overlay;
+    const otherSide = side === 'east' ? 'west' : 'east';
+    return [
+      [hex.terrain.texture, HexShape.halfPoints(x, y, otherSide)],
+      [terrain.texture, HexShape.halfPoints(x, y, side)],
+    ];
   }
 
   /** Features other than settlements; these sit under the cut that trims edge hexes. */
@@ -63,11 +84,8 @@ class HexPainter {
       .join('');
   }
 
-  polygon(points, fill, terrain) {
-    return (
-      `<polygon points="${points}" style="stroke: ${HexShape.BORDER_COLOUR}; stroke-width: 1; fill: ${fill};"/>` +
-      `<polygon points="${points}" style="stroke:none;pointer-events:none;fill:${SvgDefs.textureFor(terrain)}"/>`
-    );
+  shape(points, style) {
+    return `<polygon points="${points}" style="${style}"/>`;
   }
 }
 

@@ -57,7 +57,7 @@ class Legend {
     const points = HexShape.points(x, y);
     return (
       `<polygon points="${points}" style="stroke: ${HexShape.BORDER_COLOUR}; stroke-width: 1; fill: ${terrain.colour.toCss()};"/>` +
-      `<polygon points="${points}" style="stroke:none;pointer-events:none;fill:${SvgDefs.textureFor(terrain)}"/>`
+      `<polygon points="${points}" style="stroke:none;pointer-events:none;${SvgDefs.textureFor(terrain)}"/>`
     );
   }
 
@@ -66,7 +66,7 @@ class Legend {
     return (
       this.terrainHex(x, y, this.world.landTerrain) +
       `<polygon points="${half}" style="stroke: ${HexShape.BORDER_COLOUR}; stroke-width: 1; fill: ${terrain.colour.toCss()};"/>` +
-      `<polygon points="${half}" style="stroke:none;pointer-events:none;fill:${SvgDefs.textureFor(terrain)}"/>`
+      `<polygon points="${half}" style="stroke:none;pointer-events:none;${SvgDefs.textureFor(terrain)}"/>`
     );
   }
 

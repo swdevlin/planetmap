@@ -42,8 +42,21 @@ class MapRenderer {
     );
   }
 
+  /** Flat colours, then each texture in one pass over the map, then hex borders on top. */
   terrain() {
-    return this.grid.cells.map((cell) => this.painter.paintTerrain(cell)).join('');
+    const cells = this.grid.cells;
+    const grid = this.grid;
+    const areas = { land: [], water: [] };
+    for (const cell of cells) {
+      for (const [texture, points] of this.painter.textureAreas(cell)) areas[texture === 'water' ? 'water' : 'land'].push(points);
+    }
+    const bounds = { x: grid.left, y: grid.top, width: grid.width, height: grid.bottom - grid.top };
+    return (
+      cells.map((cell) => this.painter.paintFills(cell)).join('') +
+      SvgDefs.layer('land', areas.land, bounds) +
+      SvgDefs.layer('water', areas.water, bounds) +
+      cells.map((cell) => this.painter.paintBorders(cell)).join('')
+    );
   }
 
   features() {

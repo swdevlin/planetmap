@@ -58,6 +58,81 @@ The profile reads only what the map needs, and ignores the rest.
 | Wasteland | `tech_level.code` |
 | Resources | `resource_rating` |
 
+### Embedding the generator
+
+The HTTP layer (`src/PlanetMapServer.js`) is a thin wrapper: it parses the request body into a plain
+object and hands that same object straight to `MapService`. To call the generator from another Node app
+without going through HTTP, require `src/MapService.js` directly and pass it that object:
+
+```js
+const MapService = require('planetmap/src/MapService');
+
+const { svg, seed } = new MapService().render(planetJson, 'optional-seed');
+```
+
+`planetJson` is the same shape described above and below — there is no separate, further-transformed
+JSON. `MapService` just builds a `PlanetProfile` from it (`new PlanetProfile(planetJson)`) and runs that
+through `WorldBuilder` and `MapRenderer`.
+
+### Sample JSON
+
+A minimal object with every field the generator reads — this is exactly what you'd pass as `planetJson`
+above, and also exactly what a POST body to `/map` should contain:
+
+```json
+{
+  "name": "Daedalus",
+  "size_code": 6,
+  "starport_code": "B",
+  "atmosphere": {
+    "code": 7
+  },
+  "hydrographics": {
+    "code": 3,
+    "liquid": { "value": "Water" },
+    "distribution": { "code": 4 }
+  },
+  "population": {
+    "code": 4,
+    "cities": [
+      { "name": "Port Freedom", "capital_label": "World Capital" },
+      { "name": "Ridgeton" }
+    ]
+  },
+  "government": { "code": 3 },
+  "law_level": { "code": 3 },
+  "tech_level": { "code": 11 },
+  "resource_rating": 10,
+  "biomass_rating": 4,
+  "temperature": 288.6,
+  "tidal_lock": null,
+  "tidal_lock_target_type": null,
+  "twilight_zone": false,
+  "extinct_sophont": false,
+  "ice_caps": {
+    "edge_latitude": 65
+  }
+}
+```
+
+Notes:
+
+- `population.cities` drives the settlements; a city's `capital_label` or `type_label` picks its symbol
+  (`"World Capital"`, `"Faction Capital"`, `"National Capital"` or `"Regional Capital"`; anything else, or
+  neither field, is a plain settlement). Without `cities`, `city_count` (or `population.major_cities.value`)
+  gives the number of settlements but they come out unnamed and plain.
+- A tidally locked world (shown here as not locked) sets `"tidal_lock": "1:1"`,
+  `"tidal_lock_target_type": "Star"`, and `twilight_zone` to `true` if it has one; `ice_caps` is ignored
+  on these worlds, since their cold side is the night side, not the poles.
+- `ice_caps` is optional; leaving it out falls back to the rulebook's hydrographics-based cap size.
+  Instead of `edge_latitude` it can give `edge_temperature_k` (or `melting_point_k`) to be read against a
+  top-level `latitude_temperatures` array of `{ "latitude": ..., "temperature": ... }` points. A
+  `melting_point_k` of 373 or more makes the caps crust (e.g. frozen magma) rather than ice.
+- Most fields also accept the shape the planet endpoint actually returns, e.g. `starport.code` for
+  `starport_code`, `current_temperature` for `temperature`, `size_detail.code` for `size_code`,
+  `population.biological_data.biomass_rating.value` for `biomass_rating`, and
+  `population.biological_data.resource_rating.code` for `resource_rating`.
+
 ### Differences from the book
 
 - **No trade codes.** The rules lean on trade codes; here the planet itself answers questions such as

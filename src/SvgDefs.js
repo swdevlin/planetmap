@@ -1,26 +1,19 @@
 'use strict';
 
-const LAND_FILTER =
-  '<filter id="hexTextureLandFilter" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
-  '<feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="4" seed="7" stitchTiles="stitch" result="noise"/>' +
+// Each textured polygon carries the noise filter directly (no tiled <pattern>).
+// feTurbulence samples noise in map coordinates, so neighbouring hexes get
+// continuous noise and there are no tile seams. The noise is clipped to the
+// polygon with SourceAlpha.
+const noiseFilter = (id, frequency, octaves, seed) =>
+  `<filter id="${id}" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">` +
+  `<feTurbulence type="fractalNoise" baseFrequency="${frequency}" numOctaves="${octaves}" seed="${seed}" result="noise"/>` +
   '<feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.9 0 0 0 -0.45" result="dark"/>' +
   '<feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  -0.9 0 0 0 0.45" result="light"/>' +
-  '<feMerge><feMergeNode in="dark"/><feMergeNode in="light"/></feMerge></filter>';
+  '<feMerge result="texture"><feMergeNode in="dark"/><feMergeNode in="light"/></feMerge>' +
+  '<feComposite in="texture" in2="SourceAlpha" operator="in"/></filter>';
 
-const LAND_PATTERN =
-  '<pattern id="hexTextureLand" patternUnits="userSpaceOnUse" width="192" height="192">' +
-  '<rect width="192" height="192" filter="url(#hexTextureLandFilter)"/></pattern>';
-
-const WATER_FILTER =
-  '<filter id="hexTextureWaterFilter" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
-  '<feTurbulence type="fractalNoise" baseFrequency="0.012 0.07" numOctaves="3" seed="11" stitchTiles="stitch" result="noise"/>' +
-  '<feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.9 0 0 0 -0.45" result="dark"/>' +
-  '<feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  -0.9 0 0 0 0.45" result="light"/>' +
-  '<feMerge><feMergeNode in="dark"/><feMergeNode in="light"/></feMerge></filter>';
-
-const WATER_PATTERN =
-  '<pattern id="hexTextureWater" patternUnits="userSpaceOnUse" width="192" height="192">' +
-  '<rect width="192" height="192" filter="url(#hexTextureWaterFilter)"/></pattern>';
+const LAND_FILTER = noiseFilter('hexTextureLand', '0.045', 4, 7);
+const WATER_FILTER = noiseFilter('hexTextureWater', '0.012 0.07', 3, 11);
 
 // A tight, faint halo under each map symbol's stroke, like the bloom on a vector display.
 const PHOSPHOR_FILTER =
@@ -35,12 +28,28 @@ const PHOSPHOR_FILTER =
  */
 class SvgDefs {
   static markup() {
-    return `<defs>${LAND_FILTER}${LAND_PATTERN}${WATER_FILTER}${WATER_PATTERN}${PHOSPHOR_FILTER}</defs>`;
+    return `<defs>${LAND_FILTER}${WATER_FILTER}${PHOSPHOR_FILTER}</defs>`;
   }
 
-  /** The fill that overlays the texture for a terrain, as a url() reference. */
+  /**
+   * One texture laid over the whole map at once, clipped to the given polygons.
+   * The noise filter runs once per texture instead of once per hex.
+   */
+  static layer(texture, polygons, area) {
+    if (!polygons.length) return '';
+    const id = texture === 'water' ? 'hexTextureWater' : 'hexTextureLand';
+    const clip = `${id}Clip`;
+    const shapes = polygons.map((points) => `<polygon points="${points}"/>`).join('');
+    return (
+      `<clipPath id="${clip}">${shapes}</clipPath>` +
+      `<rect x="${area.x}" y="${area.y}" width="${area.width}" height="${area.height}" style="fill:#000;stroke:none;pointer-events:none;filter:url(#${id})" clip-path="url(#${clip})"/>`
+    );
+  }
+
+  /** The style declarations that overlay the texture for a terrain. */
   static textureFor(terrain) {
-    return terrain.texture === 'water' ? 'url(#hexTextureWater)' : 'url(#hexTextureLand)';
+    const id = terrain.texture === 'water' ? 'hexTextureWater' : 'hexTextureLand';
+    return `fill:#000;filter:url(#${id})`;
   }
 }
 
