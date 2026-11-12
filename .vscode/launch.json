@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Planetmap server",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/index.js",
+      "runtimeArgs": ["--watch"],
+      "console": "integratedTerminal",
+      "restart": true
+    }
+  ]
+}
