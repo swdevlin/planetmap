@@ -22,10 +22,13 @@ class MapRenderer {
 
   render() {
     const grid = this.grid;
-    const viewX = grid.left - MapRenderer.SIDE_MARGIN;
+    // The map keeps its size; if the legend needs more room the image widens and the map is centred in it.
+    const legendWidth = this.legend.extent(grid.width);
+    const extra = Math.max(0, legendWidth - grid.width);
+    const viewX = grid.left - MapRenderer.SIDE_MARGIN - extra / 2;
     const viewY = grid.top - MapRenderer.TOP_MARGIN;
-    const viewWidth = grid.width + 2 * MapRenderer.SIDE_MARGIN;
-    const legend = this.legend.render(grid.left - 4, grid.bottom + MapRenderer.LEGEND_GAP, grid.width);
+    const viewWidth = grid.width + 2 * MapRenderer.SIDE_MARGIN + extra;
+    const legend = this.legend.render(grid.left - 4 - extra / 2, grid.bottom + MapRenderer.LEGEND_GAP, grid.width);
     const viewHeight = grid.bottom + MapRenderer.LEGEND_GAP + legend.height - viewY;
 
     return (

@@ -18,6 +18,8 @@ class Legend {
   static ICON_TO_LABEL = 24;
   static COLUMN_PADDING = 64;
   static MAX_COLUMNS = 7;
+  /** When the map is too narrow for this many columns, the image is widened to fit them. */
+  static MIN_COLUMNS = 4;
 
   constructor(world) {
     this.world = world;
@@ -76,19 +78,57 @@ class Legend {
     return background + feature.draw(x, y);
   }
 
+  /** Width of each column when items are laid out row by row across `columns` columns. */
+  static columnWidths(items, columns) {
+    const longest = new Array(columns).fill(0);
+    items.forEach((item, index) => {
+      const column = index % columns;
+      longest[column] = Math.max(longest[column], item.label.length);
+    });
+    return longest.map((length) => length * Legend.CHARACTER_WIDTH + Legend.COLUMN_PADDING);
+  }
+
+  /**
+   * Picks the most columns that fit in `width`, each sized to its own longest label,
+   * and returns the x offset of every column.
+   */
+  layout(items, width) {
+    const most = Math.max(1, Math.min(Legend.MAX_COLUMNS, items.length));
+    const arrange = (columns) => {
+      const widths = Legend.columnWidths(items, columns);
+      const offsets = [];
+      let total = 0;
+      for (const w of widths) {
+        offsets.push(total);
+        total += w;
+      }
+      return { columns, offsets, total };
+    };
+    const fewest = Math.min(Legend.MIN_COLUMNS, most);
+    for (let columns = most; columns > fewest; columns--) {
+      const arranged = arrange(columns);
+      if (arranged.total <= width) return arranged;
+    }
+    // Never fewer than MIN_COLUMNS: if they do not fit the map's width, the image is widened instead.
+    return arrange(fewest);
+  }
+
+  /** The width the legend needs, which may be more than the map's `width`. */
+  extent(width) {
+    return this.layout(this.entries, width).total;
+  }
+
   /**
    * Draws the legend with its first row centred on `top`.
    * @returns {{svg: string, height: number}}
    */
   render(left, top, width) {
     const items = this.entries;
-    const longest = Math.max(...items.map((item) => item.label.length));
-    const columnWidth = longest * Legend.CHARACTER_WIDTH + Legend.COLUMN_PADDING;
-    const columns = Math.max(1, Math.min(Legend.MAX_COLUMNS, Math.floor(width / columnWidth)));
+    const { columns, offsets } = this.layout(items, width);
 
     let svg = '';
     items.forEach((item, index) => {
-      const x = left + HexShape.WIDTH / 2 + (index % columns) * columnWidth;
+      const x = left + HexShape.WIDTH / 2 + offsets[index % columns];
       const y = top + Math.floor(index / columns) * Legend.ROW_HEIGHT;
       svg += item.icon(x, y);
       svg += `<text style="font-size:1em;font-family:Arial, sans-serif;fill:black;" x="${x + Legend.ICON_TO_LABEL}" y="${y + 3}">${Xml.escape(item.label)}</text>`;
